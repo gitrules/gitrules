@@ -1,0 +1,157 @@
+package bureau
+
+import (
+	"context"
+	"fmt"
+
+	"github.com/gitrules/gitrules/lib/base"
+	"github.com/gitrules/gitrules/lib/form"
+	"github.com/gitrules/gitrules/lib/git"
+	"github.com/gitrules/gitrules/lib/must"
+	"github.com/gitrules/gitrules/proto"
+	"github.com/gitrules/gitrules/proto/account"
+	"github.com/gitrules/gitrules/proto/gov"
+	"github.com/gitrules/gitrules/proto/mail"
+	"github.com/gitrules/gitrules/proto/member"
+)
+
+func Process(
+	ctx context.Context,
+	govAddr gov.OwnerAddress,
+	group member.Group,
+) git.ChangeNoResult {
+
+	base.Infof("fetching service requests from the community ...")
+
+	govOwner := gov.CloneOwner(ctx, govAddr)
+	chg, changed := Process_StageOnly(ctx, govOwner, group)
+	if changed {
+		proto.Commit(ctx, govOwner.Public.Tree(), chg)
+		govOwner.Public.Push(ctx)
+	}
+	return chg
+}
+
+func Process_StageOnly(
+	ctx context.Context,
+	govOwner gov.OwnerCloned,
+	group member.Group,
+) (change git.ChangeNoResult, changed bool) {
+
+	// list participating users
+	users := member.ListGroupUsers_Local(ctx, govOwner.PublicClone(), group)
+
+	// get user accounts
+	accounts := make([]member.UserProfile, len(users))
+	for i, user := range users {
+		accounts[i] = member.GetUser_Local(ctx, govOwner.PublicClone(), user)
+	}
+
+	// fetch user requests
+	var fetchedReqs FetchedRequests
+	for i, account := range accounts {
+		if fetched, err := fetchUserRequests(ctx, govOwner, users[i], account); err != nil {
+			base.Infof("fetching bureau requests for user %v (%v)", users[i], err)
+		} else {
+			fetchedReqs = append(fetchedReqs, fetched.Result...)
+		}
+	}
+
+	// process requests
+	for _, fetched := range fetchedReqs {
+		nOK, nErr := processRequest_StageOnly(ctx, govOwner, fetched)
+		if nOK+nErr > 0 {
+			changed = true
+		}
+	}
+
+	return git.NewChangeNoResult(
+		fmt.Sprintf("Process bureau requests of users in group %v", group),
+		"bureau_process",
+	), changed
+}
+
+func processRequest_StageOnly(
+	ctx context.Context,
+	govOwner gov.OwnerCloned,
+	fetched FetchedRequest,
+) (numOK int, numErr int) {
+	for _, req := range fetched.Requests {
+		if req.Transfer == nil {
+			numErr++
+			continue
+		}
+		if req.Transfer.FromUser != fetched.User {
+			base.Infof("bureau: invalid transfer request from user %v; origin of transfer is not the requesting user", fetched.User)
+			numErr++
+			continue
+		}
+		err := must.Try(func() {
+			account.Transfer_StageOnly(
+				ctx,
+				govOwner.PublicClone(),
+				member.UserAccountID(req.Transfer.FromUser),
+				member.UserAccountID(req.Transfer.ToUser),
+				account.H(account.PluralAsset, req.Transfer.Amount),
+				fmt.Sprintf("bureau transfer"),
+			)
+		})
+		if err != nil {
+			base.Infof("bureau: transfer error (%v)", err)
+			numErr++
+			continue
+		}
+		numOK++
+		base.Infof("bureau: transferred %v credits from user %v to user %v",
+			req.Transfer.Amount,
+			req.Transfer.FromUser,
+			req.Transfer.ToUser,
+		)
+	}
+	return
+}
+
+func fetchUserRequests(
+	ctx context.Context,
+	govOwner gov.OwnerCloned,
+	user member.User,
+	account member.UserProfile,
+) (git.Change[form.Map, FetchedRequests], error) {
+
+	fetched := FetchedRequests{}
+	var respond mail.Responder[Request, Request] = func(
+		ctx context.Context,
+		_ mail.SeqNo,
+		req Request,
+	) (resp Request, err error) {
+		fetched = append(fetched,
+			FetchedRequest{
+				User:     user,
+				Address:  account.PublicAddress,
+				Requests: Requests{req},
+			})
+		return req, nil
+	}
+
+	userPublic, err := git.TryCloneOne(ctx, git.Address(account.PublicAddress))
+	if err != nil {
+		return git.Change[form.Map, FetchedRequests]{}, err
+	}
+
+	recvOnly := mail.Respond_StageOnly[Request, Request](
+		ctx,
+		govOwner.IDOwnerCloned(),
+		account.PublicAddress,
+		userPublic.Tree(),
+		BureauTopic,
+		respond,
+	)
+
+	return git.NewChange(
+		fmt.Sprintf("Fetched requests from user %v", user),
+		"bureau_fetch_user_requests",
+		form.Map{"user": user, "account": account},
+		fetched,
+		form.Forms{recvOnly},
+	), nil
+}
