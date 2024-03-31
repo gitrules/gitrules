@@ -15,12 +15,12 @@ import (
 	"github.com/gitrules/gitrules/lib/git"
 	"github.com/gitrules/gitrules/lib/must"
 	"github.com/gitrules/gitrules/lib/ns"
+	gitprovider "github.com/gitrules/gitrules/lib/provider"
+	ghprovider "github.com/gitrules/gitrules/lib/provider/github"
 	"github.com/gitrules/gitrules/proto/boot"
 	"github.com/gitrules/gitrules/proto/gov"
 	"github.com/gitrules/gitrules/proto/id"
 	"github.com/google/go-github/v58/github"
-	"github.com/gov4git/vendor4git"
-	vendor "github.com/gov4git/vendor4git/github"
 	"golang.org/x/crypto/nacl/box"
 	"golang.org/x/oauth2"
 )
@@ -39,7 +39,7 @@ func Deploy(
 	ghClient := github.NewClient(tc)
 
 	// create governance public and private repos
-	v := vendor.NewGithubVendorWithClient(ctx, ghClient)
+	v := ghprovider.NewGithubVendorWithClient(ctx, ghClient)
 
 	govPublic := Repo{Owner: govPrefix.Owner, Name: govPrefix.Name + "-gov.public"}
 	base.Infof("creating GitHub repository %v", govPublic)
@@ -158,8 +158,8 @@ func createDeployEnvironment(
 	token string,
 	project Repo,
 	govPublic Repo,
-	govPublicURLs *vendor4git.Repository,
-	govPrivateURLs *vendor4git.Repository,
+	govPublicURLs *gitprovider.Repository,
+	govPrivateURLs *gitprovider.Repository,
 	ghRelease string,
 ) {
 

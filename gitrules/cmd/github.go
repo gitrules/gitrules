@@ -5,7 +5,7 @@ import (
 	"github.com/gitrules/gitrules/github/deploy/tools"
 	"github.com/gitrules/gitrules/gitrules/api"
 	"github.com/gitrules/gitrules/lib/must"
-	"github.com/gov4git/vendor4git/github"
+	"github.com/gitrules/gitrules/lib/provider/github"
 	"github.com/spf13/cobra"
 )
 
