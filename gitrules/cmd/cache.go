@@ -7,7 +7,7 @@ import (
 
 	"github.com/gitrules/gitrules/gitrules/api"
 	"github.com/gitrules/gitrules/lib/base"
-	lib4git "github.com/gitrules/gitrules/lib/git"
+	libgit "github.com/gitrules/gitrules/lib/git"
 	"github.com/gitrules/gitrules/lib/must"
 	"github.com/spf13/cobra"
 )
@@ -60,15 +60,15 @@ var (
 )
 
 func updateCacheBestEffort(ctx context.Context) {
-	updateCacheReplicaBestEffort(ctx, lib4git.Address(setup.Gov))
-	updateCacheReplicaBestEffort(ctx, lib4git.Address(setup.Organizer.Public))
-	updateCacheReplicaBestEffort(ctx, lib4git.Address(setup.Organizer.Private))
-	updateCacheReplicaBestEffort(ctx, lib4git.Address(setup.Member.Public))
-	updateCacheReplicaBestEffort(ctx, lib4git.Address(setup.Member.Private))
+	updateCacheReplicaBestEffort(ctx, libgit.Address(setup.Gov))
+	updateCacheReplicaBestEffort(ctx, libgit.Address(setup.Organizer.Public))
+	updateCacheReplicaBestEffort(ctx, libgit.Address(setup.Organizer.Private))
+	updateCacheReplicaBestEffort(ctx, libgit.Address(setup.Member.Public))
+	updateCacheReplicaBestEffort(ctx, libgit.Address(setup.Member.Private))
 }
 
-func updateCacheReplicaBestEffort(ctx context.Context, addr lib4git.Address) {
-	if err := must.Try(func() { lib4git.CloneOne(ctx, addr) }); err != nil {
+func updateCacheReplicaBestEffort(ctx context.Context, addr libgit.Address) {
+	if err := must.Try(func() { libgit.CloneOne(ctx, addr) }); err != nil {
 		base.Infof("best effort cache update for %v failed (%v)", addr, err)
 	}
 }

@@ -222,7 +222,7 @@ func syncMotion(
 						id,
 						notice.Noticef(
 							ctx,
-							"This %s must now be closed, as the corresponding Gov4Git motion has closed. Consider creating a new %s, if you want to revive it.",
+							"This %s must now be closed, as the corresponding GitRules motion has closed. Consider creating a new %s, if you want to revive it.",
 							motion.GithubType(),
 							motion.GithubType(),
 						),
@@ -234,7 +234,7 @@ func syncMotion(
 						id,
 						notice.Noticef(
 							ctx,
-							"Gov4Git closed this issue, as the corresponding governance motion `%v` has now been closed.",
+							"GitRules closed this issue, as the corresponding governance motion `%v` has now been closed.",
 							id,
 						),
 					)
@@ -267,7 +267,7 @@ func syncMotion(
 					ctx,
 					cloned.PublicClone(),
 					id,
-					notice.Noticef(ctx, "The Gov4Git motion for this no longer managed issue/PR has been frozen."),
+					notice.Noticef(ctx, "The GitRules motion for this no longer managed issue/PR has been frozen."),
 				)
 				motionapi.FreezeMotion_StageOnly(notice.Mute(ctx), cloned, id)
 				syncChanges.Froze.Add(id)

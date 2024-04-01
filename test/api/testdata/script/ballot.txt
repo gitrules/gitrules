@@ -2,50 +2,50 @@ provision # community and one user
 
 # init-id
 
-gov4git init-gov
+gitrules init-gov
 stdout private_key_ed25519
 
 # init-gov
 
-gov4git init-id
+gitrules init-id
 stdout private_key_ed25519
 
 # add user and balance
 
-gov4git user add --name member1 --repo member_public --branch main
-gov4git account issue --to user:member1 --asset plural --quantity 30.0
+gitrules user add --name member1 --repo member_public --branch main
+gitrules account issue --to user:member1 --asset plural --quantity 30.0
 
 # ballot
 
-gov4git ballot open --name ballot_1/xyz --title 'Ballot 1' --desc 'Description 1' --group everybody --choices 'choice-1'
-gov4git ballot list --open --participant member1
+gitrules ballot open --name ballot_1/xyz --title 'Ballot 1' --desc 'Description 1' --group everybody --choices 'choice-1'
+gitrules ballot list --open --participant member1
 stdout ballot_1
 
-gov4git ballot vote --name ballot_1/xyz --choices choice-1 --strengths 9.0
-gov4git ballot tally --name ballot_1/xyz
+gitrules ballot vote --name ballot_1/xyz --choices choice-1 --strengths 9.0
+gitrules ballot tally --name ballot_1/xyz
 
-gov4git ballot show --name ballot_1/xyz
+gitrules ballot show --name ballot_1/xyz
 stdout '"score": 3'
 
-gov4git ballot vote --name ballot_1/xyz --choices choice-1 --strengths 7.0
-gov4git sync
+gitrules ballot vote --name ballot_1/xyz --choices choice-1 --strengths 7.0
+gitrules sync
 
-gov4git ballot vote --name ballot_1/xyz --choices choice-1 --strengths 2.0
-gov4git ballot freeze --name ballot_1/xyz
+gitrules ballot vote --name ballot_1/xyz --choices choice-1 --strengths 2.0
+gitrules ballot freeze --name ballot_1/xyz
 
-gov4git ballot list --frozen
+gitrules ballot list --frozen
 stdout ballot_1
 
-gov4git sync
+gitrules sync
 
-gov4git ballot show --name ballot_1/xyz
+gitrules ballot show --name ballot_1/xyz
 stdout '"score": 4'
 
-gov4git ballot close --name ballot_1/xyz
-gov4git ballot list --closed
+gitrules ballot close --name ballot_1/xyz
+gitrules ballot list --closed
 stdout ballot_1
 
-gov4git ballot show --name ballot_1/xyz
+gitrules ballot show --name ballot_1/xyz
 stdout '"score": 4'
 
 # display contents of cache directory (ls is not present on Windows)

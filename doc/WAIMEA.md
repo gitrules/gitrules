@@ -1,8 +1,8 @@
 # Waimea: Collective management and compensation for open source communities
 
-Waimea is a new Gov4Git governance mechanism we developed specifically for open-source software development and community management. It is available in [v2.2.0](https://github.com/gov4git/gov4git/releases/tag/v2.2.0) and after.
+Waimea is a new GitRules governance mechanism we developed specifically for open-source software development and community management. It is available in [v2.2.0](https://github.com/gov4git/gov4git/releases/tag/v2.2.0) and after.
 
-For context, [Gov4Git](https://gov4git.org) is a platform for augmenting the standard collaborative development workflow — based on issues and pull requests (in GitHub parlance) — with a governance and economics __mechanisms__. From a software perspective, Gov4Git provides an SDK for building mechanisms, as well as a runtime and an app for deploying mechanisms to projects on GitHub, or other similar systems.
+For context, [GitRules](https://gov4git.org) is a platform for augmenting the standard collaborative development workflow — based on issues and pull requests (in GitHub parlance) — with a governance and economics __mechanisms__. From a software perspective, GitRules provides an SDK for building mechanisms, as well as a runtime and an app for deploying mechanisms to projects on GitHub, or other similar systems.
 
 ## Governance and open source
 
@@ -26,7 +26,7 @@ The governance of any community must reflect its **ethos**, as well as the **cir
 
 While there is no one concept of an open source ethos, most varieties share a common core of tenets, which includes **transparency**, **inclusivity**, and **fairness**. Waimea is a governance mechanism which presents one possible formalization of these values:
 
-- **Transparency** is provided by the Gov4Git protocol itself wherein, by design, the logic as well as the record of all operations of governance is kept in an always-accessible, immutable ledger
+- **Transparency** is provided by the GitRules protocol itself wherein, by design, the logic as well as the record of all operations of governance is kept in an always-accessible, immutable ledger
 
 - Waimea embodies **inclusivity** by utilizing a flat organization whereby all collaborators are subject to the same rules and opportunities. (This is not to say that everybody is equal or undifferentiated within the community. Productive strategic behavior may award some with more effective power or stake than others.)
 
@@ -157,4 +157,4 @@ XXX
 
 ## Contact us and try our solution
 
-We are actively looking for trial and early adopter communities. We think that the current release of Gov4Git, equipped with Waimea, is ideal for community managers and open-source communities of peers. [Get in touch with us](https://docs.google.com/forms/d/e/1FAIpQLSeO9obA-9jFFABMoN0Vjzcsmf9fRDKD5L9OiBq49MExUQ6b4A/viewform) and briefly tell us your use case. We are looking forward to providing our trial users and early adopters with support and attention every step of the way.
+We are actively looking for trial and early adopter communities. We think that the current release of GitRules, equipped with Waimea, is ideal for community managers and open-source communities of peers. [Get in touch with us](https://docs.google.com/forms/d/e/1FAIpQLSeO9obA-9jFFABMoN0Vjzcsmf9fRDKD5L9OiBq49MExUQ6b4A/viewform) and briefly tell us your use case. We are looking forward to providing our trial users and early adopters with support and attention every step of the way.

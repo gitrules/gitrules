@@ -45,15 +45,15 @@ func PublishDashboard(
 	uploadAssets(ctx, assetsAddr, assets.Assets)
 
 	header := fmt.Sprintf(
-		"## <a href=%q><img src=%q alt=\"This project is governed with Gov4Git.\" width=\"65\" /></a> %s\n"+
-			"On `%s` by Gov4Git `%s`\n\n",
-		materials.Gov4GitWebsiteURL,
-		materials.Gov4GitAvatarURL,
-		"Gov4Git community dashboard",
+		"## <a href=%q><img src=%q alt=\"This project is governed with GitRules.\" width=\"65\" /></a> %s\n"+
+			"On `%s` by GitRules `%s`\n\n",
+		materials.GitRulesWebsiteURL,
+		materials.GitRulesAvatarURL,
+		"GitRules community dashboard",
 		time.Now().Format(time.RFC850),
 		gitrules.GetVersionInfo().Version,
 	)
-	updateDashboard(ctx, ghc, repo, "Gov4Git community dashboard", header+assets.ReportMD)
+	updateDashboard(ctx, ghc, repo, "GitRules community dashboard", header+assets.ReportMD)
 }
 
 func uploadedAssetURL(repo Repo, branch string, gitPath string) string {

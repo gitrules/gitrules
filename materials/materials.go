@@ -1,9 +1,9 @@
 package materials
 
 const (
-	Gov4GitWebsiteURL        = "https://gov4git.org"
-	Gov4GitXURL              = "https://x.com/gov4git"
-	Gov4GitGithubURL         = "https://github.com/gov4git/gov4git"
-	Gov4GitAvatarURL         = "https://raw.githubusercontent.com/gov4git/gov4git/main/materials/gov4git-avatar.png"
-	Gov4GitDesktopAppInstall = "https://github.com/gov4git/desktop-application"
+	GitRulesWebsiteURL        = "https://gitrules.ai"
+	GitRulesXURL              = "https://x.com/gitrules"
+	GitRulesGithubURL         = "https://github.com/gitrules/gitrules"
+	GitRulesAvatarURL         = "https://raw.githubusercontent.com/gitrules/gitrules/main/materials/gitrules-avatar.png"
+	GitRulesDesktopAppInstall = "https://github.com/gitrules/desktop-application"
 )

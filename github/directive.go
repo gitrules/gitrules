@@ -114,7 +114,7 @@ func ProcessDirectiveIssues_StageOnly(
 
 	report := ProcessDirectiveIssueReports{}
 
-	// fetch open issues labelled gov4git:directive
+	// fetch open issues labelled gitrules:directive
 	issues := fetchOpenIssues(ctx, repo, ghc, DirectiveLabel)
 	for _, issue := range issues {
 		directive, err := processDirectiveIssue_StageOnly(ctx, repo, ghc, govAddr, govCloned, maintainers, issue)

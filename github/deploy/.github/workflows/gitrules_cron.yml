@@ -7,13 +7,13 @@ on:
 
 jobs:
      sync_github:
-          environment: gov4git:governance
+          environment: gitrules:governance
           runs-on: ubuntu-latest
           permissions:
                contents: write
           steps:
                # checkout governance repo to gain access to assets in .github directory
-               - name: 'Checkout gov4git code'
+               - name: 'Checkout gitrules code'
                  uses: actions/checkout@v4
                # 
                # https://github.com/actions/setup-python?tab=readme-ov-file#caching-packages-dependencies
@@ -25,20 +25,20 @@ jobs:
                     cache: 'pip'
                - run: pip install -r .github/python/requirements.txt
                #
-               - name: 'Install gov4git from release'
+               - name: 'Install gitrules from release'
                  uses: jaxxstorm/action-install-gh-release@v1.10.0
                  with:
-                    repo: gov4git/gov4git # binary is added to the PATH as well
-                    tag: ${{ vars.GOV4GIT_RELEASE }}
+                    repo: gitrules/gitrules # binary is added to the PATH as well
+                    tag: ${{ vars.GITRULES_RELEASE }}
                     cache: enable
                     platform: linux
                     arch: x86_64
                - name: 'Prepare script permissions'
                  shell: bash
-                 run: chmod a+x .github/scripts/gov4git_cron.sh
+                 run: chmod a+x .github/scripts/gitrules_cron.sh
                - name: 'Perform cron tasks'
                  shell: bash
-                 run: .github/scripts/gov4git_cron.sh
+                 run: .github/scripts/gitrules_cron.sh
                  env:
                     ORGANIZER_GITHUB_TOKEN: ${{ secrets.ORGANIZER_GITHUB_TOKEN }}
                     PROJECT_OWNER: ${{ vars.PROJECT_OWNER }}

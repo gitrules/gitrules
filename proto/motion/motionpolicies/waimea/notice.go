@@ -9,9 +9,9 @@ import (
 var Welcome = fmt.Sprintf(
 	`
 
-This project is managed by [Gov4Git](%s), a decentralized governance system for collaborative git projects.
-To participate in governance, __install the [Gov4Git desktop app](%s)__.
+This project is managed by [GitRules](%s), a decentralized governance system for collaborative git projects.
+To participate in governance, __install the [GitRules desktop app](%s)__.
 	`,
-	materials.Gov4GitWebsiteURL,
-	materials.Gov4GitDesktopAppInstall,
+	materials.GitRulesWebsiteURL,
+	materials.GitRulesDesktopAppInstall,
 )

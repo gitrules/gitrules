@@ -3,20 +3,20 @@
 
 This guide will help you deploy governance for a GitHub project repository.
 
-## Install gov4git on your local machine
+## Install GitRules on your local machine
 
 Make sure you have the [Go language installed](https://golang.org/doc/install) on your local machine.
 
-Install `gov4git` on your local machine:
+Install `gitrules` on your local machine:
 
 ```bash
-go get github.com/gov4git/gov4git/gov4git@latest
+go get github.com/gitrules/gitrules/gitrules@latest
 ```
 
-Verify `gov4git` is installed:
+Verify `gitrules` is installed:
 
 ```bash
-gov4git version
+gitrules version
 ```
 
 ## Prepare a GitHub user and access token for automation
@@ -73,13 +73,13 @@ To create the token:
 You are now ready to deploy governance on your project repository. This can be accomplished with a single command:
 
 ```bash
-gov4git -v github deploy \
+gitrules -v github deploy \
      --token=$YOUR_ACCESS_TOKEN \
      --project=$PROJECT_OWNER/$PROJECT_REPO \
-     --release=$GOV4GIT_RELEASE
+     --release=$GITRULES_RELEASE
 ```
 
-Here `$GOV4GIT_RELEASE` specifies the gov4git release on GitHub that you want to use for the deployment.
+Here `$GITRULES_RELEASE` specifies the GitRules release on GitHub that you want to use for the deployment.
 
 ## What does the deployment command do?
 
@@ -87,14 +87,14 @@ During the deployment, the following steps are performed:
 
 - Two new repositories — one public, one private — are created within the GitHub organization of your project repository. The public repository is named `$PROJECT_REPO-gov.public` and the private repository is named `$PROJECT_REPO-gov.private`.
 
-- Both repositories are initialized with a newly-generated identity for your governance system. This step corresponds to the `gov4git init-gov` command.
+- Both repositories are initialized with a newly-generated identity for your governance system. This step corresponds to the `gitrules init-gov` command.
 
-- One GitHub actions are created in the public governance repository, named `.github/workflows/gov4git_cron.yml`. This action is accompanied by a helper script `.github/scripts/gov4git_cron.sh`. The action runs every two minutes. It is responsible for:
+- One GitHub actions are created in the public governance repository, named `.github/workflows/gitrules_cron.yml`. This action is accompanied by a helper script `.github/scripts/gitrules_cron.sh`. The action runs every two minutes. It is responsible for:
      - Reading all issues and pull requests from your project repositories and updating the governance system accordingly, and
      - Fetching votes and other service requests by your community members and incorporating them into the governance system.
 
-- A new GitHub environment called `gov4git:governance` is created, where the GitHub action `gov4git_cron.yml` runs. This environment contains a set of variables:
-  - `GOV4GIT_RELEASE` is the gov4git release to use for the automation
+- A new GitHub environment called `gitrules:governance` is created, where the GitHub action `gitrules_cron.yml` runs. This environment contains a set of variables:
+  - `GITRULES_RELEASE` is the GitRules release to use for the automation
   - `GOV_PUBLIC_REPO_URL` is the HTTPS URL of the public governance repository
   - `GOV_PRIVATE_REPO_URL` is the HTTPS URL of the private governance repository
   - `PROJECT_OWNER` is the GitHub user or organization owning your project repository
@@ -119,4 +119,4 @@ This allows you to perform a few basic administrative tasks, using standard git 
 
 - _If you want to reduce the size of your governance repositories_, archive their `main`-branch history in another branch or repository, and reset the `main` branch to contain only the most recent commit.
 
-- _If you want to upgrade your deployment to a newer version of gov4git_, edit the GitHub environment and change the `GOV4GIT_RELEASE` variable to the new release.
+- _If you want to upgrade your deployment to a newer version of GitRules_, edit the GitHub environment and change the `GITRULES_RELEASE` variable to the new release.

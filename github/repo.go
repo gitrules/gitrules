@@ -50,7 +50,7 @@ func parseGithubRepoHTTPSURL(s string) (repo Repo, err error) {
 }
 
 const (
-	// this regexp matches url like `https://github.com/gov4git/gov4git.git`
+	// this regexp matches url like `https://github.com/gitrules/gitrules.git`
 	githubRepoHTTPSURLRegexpSrc = `^https://github\.com/` +
 		githubIDRegexp +
 		`/` +
@@ -74,7 +74,7 @@ func parseGithubRepoSSHURL(s string) (repo Repo, err error) {
 const (
 	githubIDRegexp = `([a-zA-Z0-9\.\-_]+)`
 
-	// this regexp matches url like `git@github.com:gov4git/gov4git.git`
+	// this regexp matches url like `git@github.com:gitrules/gitrules.git`
 	githubRepoSSHURLRegexpSrc = `^git@github\.com:` +
 		githubIDRegexp +
 		`/` +

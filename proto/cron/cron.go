@@ -98,14 +98,14 @@ func Cron(
 	report["cron"] = state
 	ver := gitrules.GetVersionInfo()
 	latestChange := LatestChange{
-		Stamp:          now,
-		Gov4GitVersion: ver,
+		Stamp:           now,
+		GitRulesVersion: ver,
 	}
 
 	git.ToFileStage[LatestChange](ctx, cloned.PublicClone().Tree(), LatestChangeMetaNS, latestChange)
 
 	cronChg := git.NewChange[form.Map, LatestChange](
-		fmt.Sprintf("Gov4Git %s cron job.", ver.Version),
+		fmt.Sprintf("GitRules %s cron job.", ver.Version),
 		"cron",
 		nil,
 		// We used to include the report in the commit message. However this causes a problem on GitHub.
@@ -135,8 +135,8 @@ func Cron(
 var LatestChangeMetaNS = ns.ParseFromGitPath("latest_change.json")
 
 type LatestChange struct {
-	Stamp          time.Time            `json:"change_stamp"`
-	Gov4GitVersion gitrules.VersionInfo `json:"gitrules_version"`
+	Stamp           time.Time            `json:"change_stamp"`
+	GitRulesVersion gitrules.VersionInfo `json:"gitrules_version"`
 }
 
 type CronState struct {

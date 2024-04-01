@@ -60,6 +60,6 @@ func flushNotices(
 	}
 
 	if notShown > 0 {
-		replyToIssue(ctx, repo, ghc, issueNum, "Gov4Git notices", w.String())
+		replyToIssue(ctx, repo, ghc, issueNum, "GitRules notices", w.String())
 	}
 }

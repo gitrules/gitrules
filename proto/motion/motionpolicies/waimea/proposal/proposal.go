@@ -113,7 +113,7 @@ func (x proposalPolicy) Open(
 	})
 
 	return nil, notice.Noticef(ctx,
-		"Started managing this PR, using the Open-Source Management Protocol (Waimea), as Gov4Git proposal `%v` with initial __approval score__ of `%0.6f`."+
+		"Started managing this PR, using the Open-Source Management Protocol (Waimea), as GitRules proposal `%v` with initial __approval score__ of `%0.6f`."+
 			waimea.Welcome, prop.ID, state.ApprovalScore)
 }
 
@@ -187,7 +187,7 @@ func (x proposalPolicy) Update(
 			var w bytes.Buffer
 			for _, ref := range propState.EligibleConcerns {
 				con := motionapi.LookupMotion_Local(ctx, cloned.PublicClone(), ref.To)
-				fmt.Fprintf(&w, "- %s, managed as Gov4Git concern `%v` with __priority score__ of `%0.6f`\n",
+				fmt.Fprintf(&w, "- %s, managed as GitRules concern `%v` with __priority score__ of `%0.6f`\n",
 					con.TrackerURL, con.ID, con.Score.Attention)
 			}
 			notices = append(
@@ -364,7 +364,7 @@ func (x proposalPolicy) AddRefFrom(
 		return nil, nil
 	}
 
-	return nil, notice.Noticef(ctx, "This PR referenced %v, managed as Gov4Git concern `%v`.", to.TrackerURL, to.ID)
+	return nil, notice.Noticef(ctx, "This PR referenced %v, managed as GitRules concern `%v`.", to.TrackerURL, to.ID)
 }
 
 func (x proposalPolicy) RemoveRefTo(
@@ -398,7 +398,7 @@ func (x proposalPolicy) RemoveRefFrom(
 		return nil, nil
 	}
 
-	return nil, notice.Noticef(ctx, "This PR no longer references %v, managed as Gov4Git concern `%v`.", to.TrackerURL, to.ID)
+	return nil, notice.Noticef(ctx, "This PR no longer references %v, managed as GitRules concern `%v`.", to.TrackerURL, to.ID)
 }
 
 func (x proposalPolicy) Freeze(
@@ -409,7 +409,7 @@ func (x proposalPolicy) Freeze(
 
 ) (motionproto.Report, notice.Notices) {
 
-	return nil, notice.Noticef(ctx, "This PR, managed by Gov4Git proposal `%v`, has been frozen ❄️", motion.ID)
+	return nil, notice.Noticef(ctx, "This PR, managed by GitRules proposal `%v`, has been frozen ❄️", motion.ID)
 }
 
 func (x proposalPolicy) Unfreeze(
@@ -420,5 +420,5 @@ func (x proposalPolicy) Unfreeze(
 
 ) (motionproto.Report, notice.Notices) {
 
-	return nil, notice.Noticef(ctx, "This PR, managed by Gov4Git proposal `%v`, has been unfrozen 🌤️", motion.ID)
+	return nil, notice.Noticef(ctx, "This PR, managed by GitRules proposal `%v`, has been unfrozen 🌤️", motion.ID)
 }

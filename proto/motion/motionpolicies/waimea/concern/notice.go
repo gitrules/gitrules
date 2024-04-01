@@ -21,7 +21,7 @@ func cancelNotice(
 
 	var w bytes.Buffer
 
-	fmt.Fprintf(&w, "This issue, managed as Gov4Git proposal `%v`, has been cancelled 🌂\n\n", con.ID)
+	fmt.Fprintf(&w, "This issue, managed as GitRules proposal `%v`, has been cancelled 🌂\n\n", con.ID)
 
 	fmt.Fprintf(&w, "The __priority score__ of the issue was `%0.6f`.\n", conState.PriorityScore)
 	fmt.Fprintf(&w, "The __cost of priority__ of the issue was `%0.6f`.\n\n", conState.CostOfPriority)
@@ -58,7 +58,7 @@ func closeNotice(
 
 	var w bytes.Buffer
 
-	fmt.Fprintf(&w, "This issue, managed as Gov4Git concern `%v`, has been closed 🎉\n\n", con.ID)
+	fmt.Fprintf(&w, "This issue, managed as GitRules concern `%v`, has been closed 🎉\n\n", con.ID)
 
 	fmt.Fprintf(&w, "The __priority score__ of the issue was `%0.6f`.\n\n", conState.PriorityScore)
 	fmt.Fprintf(&w, "The __cost of priority__ of the issue was `%0.6f`.\n\n", conState.CostOfPriority)

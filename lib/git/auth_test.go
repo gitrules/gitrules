@@ -12,7 +12,7 @@ import (
 func TestAuthURL(t *testing.T) {
 	ctx := context.Background()
 
-	u, err := giturls.Parse("git@github.com:petar/gov4git.public.git")
+	u, err := giturls.Parse("git@github.com:petar/gitrules.public.git")
 	must.NoError(ctx, err)
 	fmt.Println(u)
 

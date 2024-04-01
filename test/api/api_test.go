@@ -12,7 +12,7 @@ import (
 
 func TestMain(m *testing.M) {
 	resRun := testscript.RunMain(m, map[string]func() int{
-		"gov4git": func() int {
+		"gitrules": func() int {
 			return cmd.ExecuteWithConfig("config.json")
 		},
 	})

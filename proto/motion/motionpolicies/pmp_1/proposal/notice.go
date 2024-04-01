@@ -20,7 +20,7 @@ func cancelNotice(
 
 	var w bytes.Buffer
 
-	fmt.Fprintf(&w, "This unmerged PR, managed as Gov4Git proposal `%v`, has been cancelled 🌂\n\n", motion.ID)
+	fmt.Fprintf(&w, "This unmerged PR, managed as GitRules proposal `%v`, has been cancelled 🌂\n\n", motion.ID)
 
 	fmt.Fprintf(&w, "The PR approval tally was `%0.6f`.\n\n", outcome.Scores[pmp_1.ProposalBallotChoice])
 
@@ -52,9 +52,9 @@ func closeNotice(
 	var w bytes.Buffer
 
 	if r.Accepted {
-		fmt.Fprintf(&w, "This PR, managed as Gov4Git proposal `%v`, has been accepted 🎉\n\n", prop.ID)
+		fmt.Fprintf(&w, "This PR, managed as GitRules proposal `%v`, has been accepted 🎉\n\n", prop.ID)
 	} else {
-		fmt.Fprintf(&w, "This PR, managed as Gov4Git proposal `%v`, has been rejected 🌂\n\n", prop.ID)
+		fmt.Fprintf(&w, "This PR, managed as GitRules proposal `%v`, has been rejected 🌂\n\n", prop.ID)
 	}
 
 	if r.AgainstPopular {

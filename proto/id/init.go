@@ -62,21 +62,21 @@ func initPublic_StageOnly(ctx context.Context, pub *git.Tree, cred PublicCredent
 }
 
 var (
-	PublicReadmeMD  = readmeMDHeader("This is a Gov4Git public identity repository.") + readmeBody
-	PrivateReadmeMD = readmeMDHeader("This is a Gov4Git private identity repository.") + readmeBody
+	PublicReadmeMD  = readmeMDHeader("This is a GitRules public identity repository.") + readmeBody
+	PrivateReadmeMD = readmeMDHeader("This is a GitRules private identity repository.") + readmeBody
 
 	readmeBody = fmt.Sprintf(`
-[Gov4Git](%s) is a decentralized governance and management system for git projects.
+[GitRules](%s) is a decentralized governance and management system for git projects.
 
-Learn about Gov4Git:
-- [Gov4Git on GitHub](%s).
-- [Gov4Git on Twitter/X](%s).
+Learn about GitRules:
+- [GitRules on GitHub](%s).
+- [GitRules on Twitter/X](%s).
 		`,
-		materials.Gov4GitWebsiteURL, materials.Gov4GitGithubURL, materials.Gov4GitXURL)
+		materials.GitRulesWebsiteURL, materials.GitRulesGithubURL, materials.GitRulesXURL)
 )
 
 func readmeMDHeader(title string) string {
 	return fmt.Sprintf(
 		"## <a href=%q><img src=%q alt=%q width=\"65\" /></a> %s\n\n",
-		materials.Gov4GitWebsiteURL, materials.Gov4GitAvatarURL, title, title)
+		materials.GitRulesWebsiteURL, materials.GitRulesAvatarURL, title, title)
 }

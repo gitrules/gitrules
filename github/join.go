@@ -146,7 +146,7 @@ func processJoinRequestIssue_StageOnly(
 		info.Email = u.GetEmail()
 	}
 
-	// verify that the gov4git repo url matches the login of the requesting user
+	// verify that the gitrules repo url matches the login of the requesting user
 	normUser := strings.ToLower(info.User)
 	normOwner := strings.ToLower(info.PublicRepo.Owner)
 	if !allowNonGithubJoins && normOwner != normUser {
@@ -154,7 +154,7 @@ func processJoinRequestIssue_StageOnly(
 		replyAndCloseIssue(
 			ctx, repo, ghc, issue, FollowUpSubject,
 			fmt.Sprintf(
-				"The regusting user, @%s, does not match the owner, @%s, of the provided Gov4Git public identity repo.",
+				"The regusting user, @%s, does not match the owner, @%s, of the provided GitRules public identity repo.",
 				normUser, normOwner,
 			),
 		)
@@ -199,12 +199,12 @@ func (x JoinRequest) PublicAddress() id.PublicAddress {
 }
 
 // example request body:
-// "### Your public repo\n\nhttps://github.com/petar/gov4git.public.git\n\n### Your public branch\n\nmain\n\n### Your email (optional)\n\npetar@protocol.ai"
+// "### Your public repo\n\nhttps://github.com/petar/gitrules.public.git\n\n### Your public branch\n\nmain\n\n### Your email (optional)\n\npetar@protocol.ai"
 
 /*
 ### Your public repo
 
-https://github.com/petar/gov4git.public.git
+https://github.com/petar/gitrules.public.git
 
 ### Your public branch
 

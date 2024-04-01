@@ -1,3 +1,4 @@
 #!/bin/sh
 
-./deploy.sh $GITHUB_GOV4GIT_DAO_TOKEN gov4git/sample-project v2.2.0
+./deploy.sh $GITHUB_GITRULES_DAO_TOKEN gitrules/sample-project v2.2.0
+å

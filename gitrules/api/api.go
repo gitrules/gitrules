@@ -10,8 +10,8 @@ import (
 )
 
 const (
-	LocalAgentPath     = ".gov4git"
-	LocalAgentTempPath = "gov4git"
+	LocalAgentPath     = ".gitrules"
+	LocalAgentTempPath = "gitrules"
 )
 
 type Setup struct {
@@ -52,7 +52,7 @@ type UserPassword struct {
 
 func (cfg Config) Setup(ctx context.Context) Setup {
 
-	git.SetAuthor("gov4git governance", "no-reply@gov4git")
+	git.SetAuthor("gitrules governance", "no-reply@gitrules")
 
 	// attach auth information to context
 	for url, auth := range cfg.Auth {
