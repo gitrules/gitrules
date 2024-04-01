@@ -18,5 +18,5 @@ In the event of an error:
 - Two clients, authenticated as the organizer, race to update the governance repositories. This can happen occasionally when different GitHub integration actions execute at the same time, which can happen due to normal GitHub service latency variations.
 
 *Resolution:* To resolve this error:
-1. Refresh the client's cache by running `gov4git cache update`
+1. Refresh the client's cache by running `gitrules cache update`
 2. Retry the operation

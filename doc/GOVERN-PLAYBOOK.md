@@ -8,9 +8,9 @@ Once an operation is performed, the system will respond to a GitHub issue with a
 
 ## Managing issues and pull requests
 
-Gov4Git does not manage your existing issues and pull-requests by default. To include an issue or a PR in the management mechanism, apply the label `gov4git:managed` to the GitHub issue/PR.
+GitRules does not manage your existing issues and pull-requests by default. To include an issue or a PR in the management mechanism, apply the label `gitrules:managed` to the GitHub issue/PR.
 
-In a typical workflow, the maintainer will configure the GitHub project to accept issues and PRs from anyone. Project maintainers will briefly skim new issues on a regular basis and apply the label `gov4git:managed` to the issues and PRs they want to manage via Gov4Git.
+In a typical workflow, the maintainer will configure the GitHub project to accept issues and PRs from anyone. Project maintainers will briefly skim new issues on a regular basis and apply the label `gitrules:managed` to the issues and PRs they want to manage via GitRules.
 
 ### Issues
 
@@ -22,7 +22,7 @@ An issue can be cancelled by closing it on GitHub. In this event, the escrow amo
 
 ### Pull requests
 
-Gov4Git requires PRs to include a clear indication of which issues they are trying to address. This is accomplished by including zero or more instances of the following pattern anywhere in the PR description:
+GitRules requires PRs to include a clear indication of which issues they are trying to address. This is accomplished by including zero or more instances of the following pattern anywhere in the PR description:
 
 ```
 claims https://github.com/ORG/REPO/issues/ISSUE
@@ -36,11 +36,11 @@ If the PR is rejected, the issue will be unfrozen, and it will resume accepting 
 
 #### Accepting and rejecting
 
-Gov4Git will not accept or reject a PR automatically. It is the maintainer's responsibility to do so.
+GitRules will not accept or reject a PR automatically. It is the maintainer's responsibility to do so.
 
-To accept a PR, the maintainer would simply merge it using the standard GitHub mechanism. This will trigger Gov4Git to make a record of the decision and disburse rewards according to the Plural Management Protocol.
+To accept a PR, the maintainer would simply merge it using the standard GitHub mechanism. This will trigger GitRules to make a record of the decision and disburse rewards according to the Plural Management Protocol.
 
-To reject a PR, the maintainer would simply close the PR without merging. This would trigger Gov4Git to perform refunds according to the management protocol.
+To reject a PR, the maintainer would simply close the PR without merging. This would trigger GitRules to perform refunds according to the management protocol.
 
 ## Membership
 
@@ -56,7 +56,7 @@ Close the membership request GitHub issue, or take no action.
 
 ### Issue credits to a user
 
-Create a GitHub issue, labelled `gov4git:directive`, containing a sentence of the form:
+Create a GitHub issue, labelled `gitrules:directive`, containing a sentence of the form:
 
 ```
 issue 30.5 credits to @user
@@ -64,7 +64,7 @@ issue 30.5 credits to @user
 
 ### Transfer credits from one user to another
 
-Create a GitHub issue, labelled `gov4git:directive`, containing a sentence of the form:
+Create a GitHub issue, labelled `gitrules:directive`, containing a sentence of the form:
 
 ```
 transfer 51 credits from @user1 to @user2

@@ -11,7 +11,7 @@ var (
 	authorLk sync.Mutex
 	author   *object.Signature = &object.Signature{
 		Name:  "4git",
-		Email: "no-reply@gov4git.xyz",
+		Email: "no-reply@gitrules.xyz",
 	}
 )
 

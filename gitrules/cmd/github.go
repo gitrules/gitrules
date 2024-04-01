@@ -22,10 +22,10 @@ var (
 		Short: "Deploy governance for a GitHub project repo",
 		Long: `Example usage:
 
-	gov4git github deploy \
+	gitrules github deploy \
 		--token=GITHUB_ACCESS_TOKEN \
 		--project=PROJECT_OWNER/PROJECT_REPO \
-		--release=GOV4GIT_RELEASE \
+		--release=GITRULES_RELEASE \
 		--gov=GOV_OWNER/GOV_REPO_PREFIX
 
 --token is a GitHub access token which has read access to the project repo's issues and pull requests; and
@@ -33,7 +33,7 @@ create and write access to the governance repos.
 
 --project is the GitHub project_owner/project_repo of the project repository to be governed.
 
---release specifies the GitHub release of gov4git to use for automation.
+--release specifies the GitHub release of gitrules to use for automation.
 
 --gov is the GitHub owner and repo name prefix (in the form owner/repo_prefix) of the public and private
 governance repositories to be created. Their names will be repo_prefix:gov.public and repo_prefix:gov.private,
@@ -42,10 +42,10 @@ project_repo:gov.private, respectively.
 
 Therefore, aside for debugging purposes, users should deploy with:
 
-	gov4git github deploy \
+	gitrules github deploy \
 		--token=GITHUB_ACCESS_TOKEN \
 		--project=PROJECT_OWNER/PROJECT_REPO \
-		--release=GOV4GIT_RELEASE
+		--release=GITRULES_RELEASE
 
 `,
 		Run: func(cmd *cobra.Command, args []string) {
@@ -75,7 +75,7 @@ Therefore, aside for debugging purposes, users should deploy with:
 		Short: "Create a git repo hosted on GitHub",
 		Long: `Call the GitHub API to create a new repo. Example usage:
 
-	gov4git github create --token=GITHUB_ACCESS_TOKEN --repo=GITHUB_OWNER/GITHUB_REPO
+	gitrules github create --token=GITHUB_ACCESS_TOKEN --repo=GITHUB_OWNER/GITHUB_REPO
 
 This creates a public repo. Adding the flag --private will result in creating a private repo.
 		`,
@@ -97,7 +97,7 @@ This creates a public repo. Adding the flag --private will result in creating a 
 		Short: "Remove a git repo hosted on GitHub",
 		Long: `Call the GitHub API to remove a repo. Example uage:
 
-	gov4git github remove --token=GITHUB_ACCESS_TOKEN --repo=GITHUB_OWNER/GITHUB_REPO
+	gitrules github remove --token=GITHUB_ACCESS_TOKEN --repo=GITHUB_OWNER/GITHUB_REPO
 `,
 		Run: func(cmd *cobra.Command, args []string) {
 			api.Invoke(
@@ -145,7 +145,7 @@ func init() {
 	githubCmd.AddCommand(githubDeployCmd)
 	githubDeployCmd.Flags().StringVar(&githubToken, "token", "", "GitHub access token")
 	githubDeployCmd.Flags().StringVar(&githubProject, "project", "", "GitHub project owner/repo")
-	githubDeployCmd.Flags().StringVar(&githubRelease, "release", "", "GitHub release of gov4git to use for automation")
+	githubDeployCmd.Flags().StringVar(&githubRelease, "release", "", "GitHub release of GitRules to use for automation")
 	githubDeployCmd.Flags().StringVar(&githubGov, "gov", "", "governance Github owner/repo_prefix")
 	githubDeployCmd.MarkFlagRequired("token")
 	githubDeployCmd.MarkFlagRequired("project")

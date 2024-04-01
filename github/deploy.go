@@ -30,7 +30,7 @@ func Deploy(
 	token string, // permissions: read project issues, create/write govPrefix
 	project Repo,
 	govPrefix Repo,
-	ghRelease string, // GitHub release of gov4git to install
+	ghRelease string, // GitHub release of GitRules to install
 ) api.Config {
 
 	// create authenticated GitHub client
@@ -81,7 +81,7 @@ func Deploy(
 	// install governance labels in project repo
 	createGovernanceIssueLabels(ctx, ghClient, project)
 
-	// return config for gov4git administrator
+	// return config for gitrules administrator
 	homeDir, err := os.UserHomeDir()
 	must.NoError(ctx, err)
 	return api.Config{
@@ -102,16 +102,16 @@ func Deploy(
 		MemberPrivateURL:    "YOUR_MEMBER_PRIVATE_REPO_HTTPS_URL",
 		MemberPrivateBranch: git.MainBranch,
 		//
-		CacheDir:        path.Join(homeDir, ".gov4git", "cache"),
+		CacheDir:        path.Join(homeDir, ".gitrules", "cache"),
 		CacheTTLSeconds: 0,
 	}
 }
 
 var (
-	//go:embed deploy/.github/scripts/gov4git_cron.sh
+	//go:embed deploy/.github/scripts/gitrules_cron.sh
 	cronSH string
 
-	//go:embed deploy/.github/workflows/gov4git_cron.yml
+	//go:embed deploy/.github/workflows/gitrules_cron.yml
 	cronYML string
 
 	//go:embed deploy/.github/python/requirements.txt
@@ -127,11 +127,11 @@ func installGithubActions(
 	t := govCloned.Tree()
 
 	// populate helper files for github actions
-	git.StringToFileStage(ctx, t, ns.NS{".github", "scripts", "gov4git_cron.sh"}, cronSH)
-	git.StringToFileStage(ctx, t, ns.NS{".github", "workflows", "gov4git_cron.yml"}, cronYML)
+	git.StringToFileStage(ctx, t, ns.NS{".github", "scripts", "gitrules_cron.sh"}, cronSH)
+	git.StringToFileStage(ctx, t, ns.NS{".github", "workflows", "gitrules_cron.yml"}, cronYML)
 	git.StringToFileStage(ctx, t, ns.NS{".github", "python", "requirements.txt"}, pythonRequirementsTXT)
 
-	git.Commit(ctx, t, "install gov4git github actions")
+	git.Commit(ctx, t, "install gitrules github actions")
 	govCloned.Push(ctx)
 }
 
@@ -195,7 +195,7 @@ func createDeployEnvironment(
 
 	// create environment variables
 	envVars := map[string]string{
-		"GOV4GIT_RELEASE":      ghRelease,
+		"GITRULES_RELEASE":     ghRelease,
 		"PROJECT_OWNER":        project.Owner,
 		"PROJECT_REPO":         project.Name,
 		"GOV_PUBLIC_REPO_URL":  govPublicURLs.HTTPSURL,

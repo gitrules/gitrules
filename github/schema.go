@@ -17,27 +17,27 @@ import (
 
 const (
 	// prioritizing issues by ballot
-	PrioritizeIssueByGovernanceLabel = "gov4git:prioritize"
+	PrioritizeIssueByGovernanceLabel = "gitrules:prioritize"
 	PrioritizeBallotChoice           = "prioritize"
 
 	// member join
 	JoinRequestApprovalWord = "approve"
 
 	// organizer directives
-	DirectiveLabel = "gov4git:directive"
+	DirectiveLabel = "gitrules:directive"
 
 	// labels for issues that are managed
 	// TODO: generate labels from the descriptors of installed motion policies
-	IssueIsManagedLabel         = "gov4git:managed"
+	IssueIsManagedLabel         = "gitrules:managed"
 	IssueIsManagedByPMPv0Label  = pmp_0.ConcernPolicyGithubLabel
 	IssueIsManagedByPMPv1Label  = pmp_1.ConcernPolicyGithubLabel
 	IssueIsManagedByWaimeaLabel = waimea.ConcernPolicyGithubLabel
 
 	// the issue with this label will be used as a dashboard display
-	DashboardIssueLabel = "gov4git:dashboard"
+	DashboardIssueLabel = "gitrules:dashboard"
 
 	// Github deploy environment
-	DeployEnvName = "gov4git:governance"
+	DeployEnvName = "gitrules:governance"
 )
 
 var GovernanceLabels = []string{

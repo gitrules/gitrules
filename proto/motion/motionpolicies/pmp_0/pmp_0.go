@@ -15,12 +15,12 @@ const (
 	ConcernPolicyName  motion.PolicyName = "pmp-concern-policy"
 	ProposalPolicyName motion.PolicyName = "pmp-proposal"
 
-	ConcernPolicyGithubLabel  = "gov4git:pmp-v0"
+	ConcernPolicyGithubLabel  = "gitrules:pmp-v0"
 	ProposalPolicyGithubLabel = ConcernPolicyGithubLabel
 
 	// We explicitly avoid using "resolves" as the keyword for referencing issues/PRs, as
 	// "resolves" triggers Github to automatically close resolved issues when a PR is closed, thereby
-	// not giving Gov4Git a chance to close them as part of the PR closure/clearance procedure.
+	// not giving GitRules a chance to close them as part of the PR closure/clearance procedure.
 	ClaimsRefType = motionproto.RefType("claims")
 )
 

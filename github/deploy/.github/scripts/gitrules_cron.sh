@@ -24,9 +24,9 @@
 #    SYNC_COMMUNITY_FREQ = the frequency of updates from the community members, in seconds
 #    SYNC_FETCH_PAR = the maximum parallelism when fetching community members repos
 
-mkdir -p ~/.gov4git/cache
+mkdir -p ~/.gitrules/cache
 
-CACHE_DIR=~/.gov4git/cache
+CACHE_DIR=~/.gitrules/cache
 
 CONFIG_JSON=$(
      jq -n \
@@ -46,10 +46,10 @@ CONFIG_JSON=$(
                "gov_private_branch": "main"
           }'
 )
-echo $CONFIG_JSON > ~/.gov4git/config.json
-cat ~/.gov4git/config.json
+echo $CONFIG_JSON > ~/.gitrules/config.json
+cat ~/.gitrules/config.json
 
-gov4git -v --config=$HOME/.gov4git/config.json cron \
+gitrules -v --config=$HOME/.gitrules/config.json cron \
      --token=$ORGANIZER_GITHUB_TOKEN \
      --project=$PROJECT_OWNER/$PROJECT_REPO \
      --github_freq=$SYNC_GITHUB_FREQ \

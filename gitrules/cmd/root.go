@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"runtime"
 
-	gov4git "github.com/gitrules/gitrules"
+	"github.com/gitrules/gitrules"
 	"github.com/gitrules/gitrules/github"
 	"github.com/gitrules/gitrules/gitrules/api"
 	"github.com/gitrules/gitrules/lib/base"
@@ -19,8 +19,8 @@ import (
 
 var (
 	rootCmd = &cobra.Command{
-		Use:   "gov4git",
-		Short: "gov4git is a command-line client for the gov4git community governance protocol",
+		Use:   "gitrules",
+		Short: "gitrules is a command-line client for the gitrules community governance protocol",
 		Long:  ``,
 		Run: func(cmd *cobra.Command, args []string) {
 		},
@@ -41,7 +41,7 @@ func init() {
 
 	rootCmd.SilenceUsage = true
 	rootCmd.SilenceErrors = true
-	rootCmd.PersistentFlags().StringVarP(&configPath, "config", "c", "", "config file (default is $HOME/.gov4git/config.json)")
+	rootCmd.PersistentFlags().StringVarP(&configPath, "config", "c", "", "config file (default is $HOME/.gitrules/config.json)")
 	rootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "run in developer mode with verbose logging")
 	rootCmd.PersistentFlags().StringVarP(&cpuProfilePath, "cpu", "p", "", "cpu profile path")
 	rootCmd.PersistentFlags().StringVarP(&memProfilePath, "mem", "m", "", "memory profile path")
@@ -70,7 +70,7 @@ func initAfterFlags() {
 	} else {
 		base.LogQuietly()
 	}
-	base.Infof("gov4git version: %v, os: %v, arch: %v", gov4git.Short(), runtime.GOOS, runtime.GOARCH)
+	base.Infof("gitrules version: %v, os: %v, arch: %v", gitrules.Short(), runtime.GOOS, runtime.GOARCH)
 	api.SetCPUProfilePath(cpuProfilePath)
 	api.SetMemProfilePath(memProfilePath)
 }
@@ -84,7 +84,7 @@ func LoadConfig() {
 		}
 		base.AssertNoErr(err)
 
-		// search for config in ~/.gov4git/config.json
+		// search for config in ~/.gitrules/config.json
 		configPath = filepath.Join(home, api.LocalAgentPath, "config.json")
 	}
 

@@ -40,5 +40,5 @@ func checkAuth(name string) bool {
 }
 
 var (
-	TestRepo = govgh.Repo{Owner: "gov4git", Name: "testing.project"}
+	TestRepo = govgh.Repo{Owner: "gitrules", Name: "testing.project"}
 )

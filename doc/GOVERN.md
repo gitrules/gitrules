@@ -10,7 +10,7 @@ There is a short [playbook](GOVERN-PLAYBOOK.md) summarizing the main operations 
 
 Non-members must join your project community before they can participate in governance.
 
-Users can request to join directly from the [desktop app](https://github.com/gov4git/desktop-application/).
+Users can request to join directly from the [desktop app](https://github.com/gitrules/desktop-application/).
 
 Join requests will appear as new issues in your GitHub project repository, assigned to the community organizer's GitHub user.
 
@@ -20,7 +20,7 @@ Membership requests can be granted by any repository collaborator who has _maint
 approved
 ```
 
-In a couple of minutes Gov4Git automation will process the issue. It will reply with a comment indicating success — or a reason for failure — and will close the issue. In the event of a failure, you can re-open the issue to prompt the system to retry.
+In a couple of minutes GitRules automation will process the issue. It will reply with a comment indicating success — or a reason for failure — and will close the issue. In the event of a failure, you can re-open the issue to prompt the system to retry.
 
 If you choose to deny a request, you do not need to take any action, however it is nice to explain your reasoning in the form of a comment.
 
@@ -36,7 +36,7 @@ The community organizer has the power to issue (or withdraw) credits to any memb
 
 The organizer can issue new credits and deposit them into the account of any community member.
 
-To issue credits, the organizer creates a GitHub issue labelled `gov4git:directive`. The body of the issue includes a directive of the form:
+To issue credits, the organizer creates a GitHub issue labelled `gitrules:directive`. The body of the issue includes a directive of the form:
 
 ```
 issue 30.5 credits to @user
@@ -46,7 +46,7 @@ issue 30.5 credits to @user
 
 The organizer can transfer credits from one community member to another.
 
-To transfer credits, the organizer creates a GitHub issue labelled `gov4git:directive`. The body of the issue includes a directive of the form:
+To transfer credits, the organizer creates a GitHub issue labelled `gitrules:directive`. The body of the issue includes a directive of the form:
 
 ```
 transfer 51 credits from @user1 to @user2
@@ -56,7 +56,7 @@ transfer 51 credits from @user1 to @user2
 
 ### Concerns and proposals
 
-Collaborative projects, whether open-source or enterprise, often operate based on a set of core principles for managing collaboration. These principles primarily revolve around two key devices, which we call "concerns" and "proposals". They correspond to GitHub issues and pull requests, respectively, when using Gov4Git with GitHub.
+Collaborative projects, whether open-source or enterprise, often operate based on a set of core principles for managing collaboration. These principles primarily revolve around two key devices, which we call "concerns" and "proposals". They correspond to GitHub issues and pull requests, respectively, when using GitRules with GitHub.
 
 ### Goals of management
 

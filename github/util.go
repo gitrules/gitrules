@@ -69,10 +69,10 @@ func replyToIssue(
 ) {
 
 	header := fmt.Sprintf(
-		"## <a href=%q><img src=%q alt=\"This project is governed with Gov4Git.\" width=\"65\" /></a> %s\n"+
-			"On `%s` by Gov4Git `%s`\n\n",
-		materials.Gov4GitWebsiteURL,
-		materials.Gov4GitAvatarURL,
+		"## <a href=%q><img src=%q alt=\"This project is governed with GitRules.\" width=\"65\" /></a> %s\n"+
+			"On `%s` by GitRules `%s`\n\n",
+		materials.GitRulesWebsiteURL,
+		materials.GitRulesAvatarURL,
 		subject,
 		time.Now().Format(time.RFC850),
 		gitrules.GetVersionInfo().Version,

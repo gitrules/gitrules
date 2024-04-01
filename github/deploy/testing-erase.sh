@@ -1,3 +1,3 @@
 #!/bin/sh
 
-./erase.sh $GITHUB_GOV4GIT_TOKEN gov4git/testing.project
+./erase.sh $GITHUB_GITRULES_TOKEN gitrules/testing.project

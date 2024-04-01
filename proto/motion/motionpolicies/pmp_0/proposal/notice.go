@@ -21,7 +21,7 @@ func cancelNotice(
 
 	var w bytes.Buffer
 
-	fmt.Fprintf(&w, "This unmerged PR, managed as Gov4Git proposal `%v`, has been cancelled 🌂\n\n", motion.ID)
+	fmt.Fprintf(&w, "This unmerged PR, managed as GitRules proposal `%v`, has been cancelled 🌂\n\n", motion.ID)
 
 	if againstPopular {
 		fmt.Fprintf(&w, "⚠️ Note that the PR was cancelled against the popular vote.\n\n")
@@ -59,7 +59,7 @@ func closeNotice(
 
 	var w bytes.Buffer
 
-	fmt.Fprintf(&w, "This PR, managed as Gov4Git proposal `%v`, has been closed 🎉\n\n", prop.ID)
+	fmt.Fprintf(&w, "This PR, managed as GitRules proposal `%v`, has been closed 🎉\n\n", prop.ID)
 
 	if againstPopular {
 		fmt.Fprintf(&w, "⚠️ Note that the PR was merged against the popular vote.\n\n")

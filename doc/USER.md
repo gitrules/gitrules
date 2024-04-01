@@ -1,10 +1,10 @@
 # User manual
 
-This documentation is a user's manual for gov4git.
+This documentation is a user's manual for GitRules.
 
 ## Roles and responsibilities
 
-There are two distinct roles (i.e. types of users) involved in a gov4git-governed open-source project:
+There are two distinct roles (i.e. types of users) involved in a GitRules-governed open-source project:
 - the community **organizer** is the person who owns the project repository which is to be governed
 - a community **member** is a person who contributes to the project repository and participates in the governance of the project
 

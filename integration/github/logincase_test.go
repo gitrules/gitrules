@@ -17,7 +17,7 @@ func TestGithubIssueByUserWithCamelCaseLogin(t *testing.T) {
 		t.Fatalf("no user")
 	}
 	login := issue.GetUser().GetLogin()
-	exp := "Gov4GitTestUser"
+	exp := "GitRulesTestUser"
 	if login != exp {
 		t.Errorf("expecting %v, got %v", exp, login)
 	}

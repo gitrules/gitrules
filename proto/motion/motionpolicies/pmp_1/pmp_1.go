@@ -16,7 +16,7 @@ const (
 	ConcernPolicyName  motion.PolicyName = "pmp-concern-policy-v1"
 	ProposalPolicyName motion.PolicyName = "pmp-proposal-v1"
 
-	ConcernPolicyGithubLabel  = "gov4git:pmp-v1"
+	ConcernPolicyGithubLabel  = "gitrules:pmp-v1"
 	ProposalPolicyGithubLabel = ConcernPolicyGithubLabel
 
 	ClaimsRefType = pmp_0.ClaimsRefType
