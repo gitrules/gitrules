@@ -4,7 +4,7 @@ import (
 	"context"
 	"sync"
 
-	govgh "github.com/gitrules/gitrules/github"
+	govgh "github.com/gitrules/gitrules/github/lib"
 	"github.com/gitrules/gitrules/lib/base"
 	"github.com/gitrules/gitrules/lib/must"
 	"github.com/google/go-github/v66/github"

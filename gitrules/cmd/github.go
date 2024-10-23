@@ -1,8 +1,8 @@
 package cmd
 
 import (
-	govgh "github.com/gitrules/gitrules/github"
-	"github.com/gitrules/gitrules/github/deploy/tools"
+	govgh "github.com/gitrules/gitrules/github/lib"
+	"github.com/gitrules/gitrules/github/lib/deploy/tools"
 	"github.com/gitrules/gitrules/gitrules/api"
 	"github.com/gitrules/gitrules/lib/must"
 	"github.com/gitrules/gitrules/lib/provider/github"

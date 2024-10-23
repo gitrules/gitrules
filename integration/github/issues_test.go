@@ -9,7 +9,7 @@ import (
 	"sort"
 	"testing"
 
-	govgh "github.com/gitrules/gitrules/github"
+	govgh "github.com/gitrules/gitrules/github/lib"
 	"github.com/gitrules/gitrules/lib/form"
 	"github.com/gitrules/gitrules/lib/util"
 	"github.com/google/go-github/v66/github"

@@ -6,7 +6,7 @@ package github_test
 import (
 	"testing"
 
-	govgh "github.com/gitrules/gitrules/github"
+	govgh "github.com/gitrules/gitrules/github/lib"
 	"github.com/gitrules/gitrules/lib/form"
 	"github.com/gitrules/gitrules/lib/testutil"
 	"github.com/gitrules/gitrules/proto/motion/motionapi"

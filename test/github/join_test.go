@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	govgh "github.com/gitrules/gitrules/github"
+	govgh "github.com/gitrules/gitrules/github/lib"
 	"github.com/gitrules/gitrules/lib/base"
 	"github.com/gitrules/gitrules/lib/git"
 	"github.com/gitrules/gitrules/lib/testutil"

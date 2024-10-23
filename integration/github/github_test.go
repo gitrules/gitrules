@@ -10,7 +10,7 @@ import (
 	"fmt"
 	"os"
 
-	govgh "github.com/gitrules/gitrules/github"
+	govgh "github.com/gitrules/gitrules/github/lib"
 	"github.com/google/go-github/v66/github"
 )
 
