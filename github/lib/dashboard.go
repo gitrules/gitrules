@@ -1,4 +1,4 @@
-package github
+package lib
 
 import (
 	"context"
@@ -12,7 +12,7 @@ import (
 	"github.com/gitrules/gitrules/materials"
 	"github.com/gitrules/gitrules/proto/gov"
 	"github.com/gitrules/gitrules/proto/metrics"
-	"github.com/google/go-github/v58/github"
+	"github.com/google/go-github/v66/github"
 )
 
 // the dashboard is published and updated on the first issue that is labelled "gitrules:dashboard"

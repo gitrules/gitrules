@@ -1,6 +1,6 @@
-package github
+package lib
 
-import "github.com/google/go-github/v58/github"
+import "github.com/google/go-github/v66/github"
 
 func IsLabelAlreadyExists(err error) bool {
 

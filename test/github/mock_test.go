@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	govgh "github.com/gitrules/gitrules/github"
-	"github.com/google/go-github/v58/github"
+	govgh "github.com/gitrules/gitrules/github/lib"
+	"github.com/google/go-github/v66/github"
 	"github.com/migueleliasweb/go-github-mock/src/mock"
 )
 

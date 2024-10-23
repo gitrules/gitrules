@@ -1,4 +1,4 @@
-package github
+package lib
 
 import (
 	"context"
@@ -10,7 +10,7 @@ import (
 	"github.com/gitrules/gitrules/lib/must"
 	"github.com/gitrules/gitrules/lib/util"
 	"github.com/gitrules/gitrules/materials"
-	"github.com/google/go-github/v58/github"
+	"github.com/google/go-github/v66/github"
 )
 
 func FetchRepoMaintainers(

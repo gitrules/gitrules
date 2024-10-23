@@ -4,14 +4,14 @@ import (
 	"fmt"
 	"testing"
 
-	govgh "github.com/gitrules/gitrules/github"
+	govgh "github.com/gitrules/gitrules/github/lib"
 	"github.com/gitrules/gitrules/lib/base"
 	"github.com/gitrules/gitrules/lib/git"
 	"github.com/gitrules/gitrules/lib/testutil"
 	"github.com/gitrules/gitrules/proto/id"
 	"github.com/gitrules/gitrules/runtime"
 	"github.com/gitrules/gitrules/test"
-	"github.com/google/go-github/v58/github"
+	"github.com/google/go-github/v66/github"
 	"github.com/migueleliasweb/go-github-mock/src/mock"
 )
 

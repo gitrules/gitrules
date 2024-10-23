@@ -8,7 +8,7 @@ import (
 	"runtime"
 
 	"github.com/gitrules/gitrules"
-	"github.com/gitrules/gitrules/github"
+	gh "github.com/gitrules/gitrules/github/lib"
 	"github.com/gitrules/gitrules/gitrules/api"
 	"github.com/gitrules/gitrules/lib/base"
 	"github.com/gitrules/gitrules/lib/form"
@@ -27,7 +27,7 @@ var (
 	}
 )
 
-var ctx = github.WithTokenSource(git.WithTTL(git.WithAuth(context.Background(), nil), nil), nil)
+var ctx = gh.WithTokenSource(git.WithTTL(git.WithAuth(context.Background(), nil), nil), nil)
 
 var (
 	configPath     string

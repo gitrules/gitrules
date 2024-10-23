@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/gitrules/gitrules/lib/provider"
-	"github.com/google/go-github/v58/github"
+	"github.com/google/go-github/v66/github"
 	"golang.org/x/oauth2"
 )
 

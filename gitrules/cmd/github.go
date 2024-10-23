@@ -1,8 +1,9 @@
 package cmd
 
 import (
-	govgh "github.com/gitrules/gitrules/github"
-	"github.com/gitrules/gitrules/github/deploy/tools"
+	"github.com/gitrules/gitrules/github/app"
+	govgh "github.com/gitrules/gitrules/github/lib"
+	"github.com/gitrules/gitrules/github/lib/deploy/tools"
 	"github.com/gitrules/gitrules/gitrules/api"
 	"github.com/gitrules/gitrules/lib/must"
 	"github.com/gitrules/gitrules/lib/provider/github"
@@ -129,16 +130,33 @@ This creates a public repo. Adding the flag --private will result in creating a 
 			)
 		},
 	}
+
+	githubAppCmd = &cobra.Command{
+		Use:   "app",
+		Short: "Run the GitRules for GitHub app server",
+		Long:  ``,
+		Run: func(cmd *cobra.Command, args []string) {
+			api.Invoke(
+				func() {
+					appCfg, err := app.ReadConfig(githubAppConfig)
+					must.NoError(ctx, err)
+					app.RunServer(ctx, githubAppAddress, appCfg)
+				},
+			)
+		},
+	}
 )
 
 var (
-	githubToken   string
-	githubProject string
-	githubRelease string
-	githubGov     string
-	githubRepo    string
-	githubPrivate bool
-	githubIssueNo int64
+	githubToken      string
+	githubProject    string
+	githubRelease    string
+	githubGov        string
+	githubRepo       string
+	githubPrivate    bool
+	githubIssueNo    int64
+	githubAppAddress string
+	githubAppConfig  string
 )
 
 func init() {
@@ -172,4 +190,8 @@ func init() {
 	githubClearCommentsCmd.MarkFlagRequired("project")
 	githubClearCommentsCmd.MarkFlagRequired("issue")
 
+	githubCmd.AddCommand(githubAppCmd)
+	githubAppCmd.Flags().StringVar(&githubAppAddress, "addr", "localhost:3000", "GitHub app server address")
+	githubAppCmd.Flags().StringVar(&githubAppConfig, "config", "", "GitHub app config")
+	githubClearCommentsCmd.MarkFlagRequired("config")
 }

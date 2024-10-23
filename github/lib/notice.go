@@ -1,4 +1,4 @@
-package github
+package lib
 
 import (
 	"bytes"
@@ -9,7 +9,7 @@ import (
 	"github.com/gitrules/gitrules/proto/gov"
 	"github.com/gitrules/gitrules/proto/motion/motionapi"
 	"github.com/gitrules/gitrules/proto/notice"
-	"github.com/google/go-github/v58/github"
+	"github.com/google/go-github/v66/github"
 )
 
 func DisplayNotices_StageOnly(

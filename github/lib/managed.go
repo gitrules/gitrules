@@ -1,4 +1,4 @@
-package github
+package lib
 
 import (
 	"context"
@@ -10,7 +10,7 @@ import (
 	"github.com/gitrules/gitrules/proto/gov"
 	"github.com/gitrules/gitrules/proto/member"
 	"github.com/gitrules/gitrules/proto/motion/motionapi"
-	"github.com/google/go-github/v58/github"
+	"github.com/google/go-github/v66/github"
 
 	_ "github.com/gitrules/gitrules/proto/motion/motionpolicies/pmp_0/use"
 	_ "github.com/gitrules/gitrules/proto/motion/motionpolicies/pmp_1/use"

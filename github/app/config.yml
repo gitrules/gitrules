@@ -1,0 +1,10 @@
+github:
+  v3_api_url: "https://api.github.com/"
+  app:
+    integration_id: 0
+    webhook_secret: ""
+    private_key: |
+      your-app-private-key-content-here
+
+app:
+  pull_request_preamble: "I am echo bot."

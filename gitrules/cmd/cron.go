@@ -3,8 +3,7 @@ package cmd
 import (
 	"time"
 
-	"github.com/gitrules/gitrules/github"
-	govgh "github.com/gitrules/gitrules/github"
+	govgh "github.com/gitrules/gitrules/github/lib"
 	"github.com/gitrules/gitrules/gitrules/api"
 	"github.com/gitrules/gitrules/proto/cron"
 	"github.com/spf13/cobra"
@@ -51,9 +50,9 @@ var (
 func init() {
 	cronCmd.Flags().StringVar(&githubProject, "project", "", "GitHub project owner/repo")
 	cronCmd.Flags().StringVar(&githubToken, "token", "", "GitHub access token")
-	cronCmd.Flags().IntVar(&cronGithubFreqSeconds, "github_freq", github.DefaultGithubFreq, "frequency of GitHub import, in seconds")
-	cronCmd.Flags().IntVar(&cronCommunityFreqSeconds, "community_freq", github.DefaultCommunityFreq, "frequency of community tallies, in seconds")
-	cronCmd.Flags().IntVar(&syncFetchPar, "fetch_par", github.DefaultFetchParallelism, "parallelism while clonging member repos for vote collection")
+	cronCmd.Flags().IntVar(&cronGithubFreqSeconds, "github_freq", govgh.DefaultGithubFreq, "frequency of GitHub import, in seconds")
+	cronCmd.Flags().IntVar(&cronCommunityFreqSeconds, "community_freq", govgh.DefaultCommunityFreq, "frequency of community tallies, in seconds")
+	cronCmd.Flags().IntVar(&syncFetchPar, "fetch_par", govgh.DefaultFetchParallelism, "parallelism while clonging member repos for vote collection")
 
 	cronCmd.MarkFlagRequired("project")
 	cronCmd.MarkFlagRequired("token")

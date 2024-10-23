@@ -6,7 +6,7 @@ import (
 	"os"
 
 	"github.com/gitrules/gitrules/lib/must"
-	"github.com/google/go-github/v58/github"
+	"github.com/google/go-github/v66/github"
 	"golang.org/x/oauth2"
 )
 

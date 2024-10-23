@@ -1,4 +1,4 @@
-package github
+package lib
 
 import (
 	"context"
@@ -13,7 +13,7 @@ import (
 	"github.com/gitrules/gitrules/proto/gov"
 	"github.com/gitrules/gitrules/proto/id"
 	"github.com/gitrules/gitrules/proto/member"
-	"github.com/google/go-github/v58/github"
+	"github.com/google/go-github/v66/github"
 )
 
 func ProcessJoinRequestIssuesApprovedByMaintainer(
