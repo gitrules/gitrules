@@ -17,7 +17,7 @@ import (
 	"github.com/gitrules/gitrules/proto/member"
 	"github.com/gitrules/gitrules/proto/motion/motionapi"
 	"github.com/gitrules/gitrules/proto/motion/motionpolicies/pmp_0"
-	"github.com/google/go-github/v58/github"
+	"github.com/google/go-github/v66/github"
 )
 
 type ProcessDirectiveIssueReports []ProcessDirectiveIssueReport

@@ -6,7 +6,7 @@ require (
 	github.com/go-git/go-billy/v5 v5.5.0
 	github.com/go-git/go-git/v5 v5.12.0
 	github.com/gofrs/flock v0.8.1
-	github.com/google/go-github/v58 v58.0.0
+	github.com/google/go-github/v66 v66.0.0
 	github.com/migueleliasweb/go-github-mock v0.0.19
 	github.com/rogpeppe/go-internal v1.11.0
 	github.com/rs/zerolog v1.32.0

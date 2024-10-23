@@ -12,7 +12,7 @@ import (
 	govgh "github.com/gitrules/gitrules/github"
 	"github.com/gitrules/gitrules/lib/form"
 	"github.com/gitrules/gitrules/lib/util"
-	"github.com/google/go-github/v58/github"
+	"github.com/google/go-github/v66/github"
 )
 
 func TestViewIssueStructure(t *testing.T) {

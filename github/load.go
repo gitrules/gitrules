@@ -15,7 +15,7 @@ import (
 	"github.com/gitrules/gitrules/proto/motion/motionpolicies/pmp_0"
 	"github.com/gitrules/gitrules/proto/motion/motionpolicies/pmp_1"
 	"github.com/gitrules/gitrules/proto/motion/motionpolicies/waimea"
-	"github.com/google/go-github/v58/github"
+	"github.com/google/go-github/v66/github"
 )
 
 func LoadIssues(

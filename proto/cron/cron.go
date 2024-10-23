@@ -17,7 +17,7 @@ import (
 	"github.com/gitrules/gitrules/proto/ballot/ballotapi"
 	"github.com/gitrules/gitrules/proto/gov"
 	"github.com/gitrules/gitrules/proto/motion/motionapi"
-	"github.com/google/go-github/v58/github"
+	"github.com/google/go-github/v66/github"
 )
 
 var CronNS = ns.NS{"cron", "cron.json"}

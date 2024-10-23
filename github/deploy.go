@@ -20,7 +20,7 @@ import (
 	"github.com/gitrules/gitrules/proto/boot"
 	"github.com/gitrules/gitrules/proto/gov"
 	"github.com/gitrules/gitrules/proto/id"
-	"github.com/google/go-github/v58/github"
+	"github.com/google/go-github/v66/github"
 	"golang.org/x/crypto/nacl/box"
 	"golang.org/x/oauth2"
 )
@@ -205,7 +205,7 @@ func createDeployEnvironment(
 		"SYNC_FETCH_PAR":       strconv.Itoa(DefaultFetchParallelism),
 	}
 	for k, v := range envVars {
-		_, err := ghClient.Actions.CreateEnvVariable(ctx, int(*ghGovPubRepo.ID), env.GetName(), &github.ActionsVariable{Name: k, Value: v})
+		_, err := ghClient.Actions.CreateEnvVariable(ctx, govPublic.Owner, govPublic.Name, env.GetName(), &github.ActionsVariable{Name: k, Value: v})
 		must.NoError(ctx, err)
 	}
 }
