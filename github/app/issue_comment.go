@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/gitrules/gitrules/lib/base"
 	"github.com/google/go-github/v66/github"
 	"github.com/palantir/go-githubapp/githubapp"
 	"github.com/pkg/errors"
@@ -31,9 +32,9 @@ func (h *PRCommentHandler) Handle(ctx context.Context, eventType, deliveryID str
 	prNum := event.GetIssue().GetNumber()
 	installationID := githubapp.GetInstallationIDFromEvent(&event)
 
-	ctx, logger := githubapp.PreparePRContext(ctx, installationID, repo, event.GetIssue().GetNumber())
+	// ctx, logger := githubapp.PreparePRContext(ctx, installationID, repo, event.GetIssue().GetNumber())
 
-	logger.Debug().Msgf("Event action is %s", event.GetAction())
+	base.Debugf("event action is %s", event.GetAction())
 	if event.GetAction() != "created" {
 		return nil
 	}
@@ -49,18 +50,18 @@ func (h *PRCommentHandler) Handle(ctx context.Context, eventType, deliveryID str
 	body := event.GetComment().GetBody()
 
 	if strings.HasSuffix(author, "[bot]") {
-		logger.Debug().Msg("Issue comment was created by a bot")
+		base.Debugf("issue comment was created by a bot")
 		return nil
 	}
 
-	logger.Debug().Msgf("Echoing comment on %s/%s#%d by %s", repoOwner, repoName, prNum, author)
+	base.Debugf("echoing comment on %s/%s#%d by %s", repoOwner, repoName, prNum, author)
 	msg := fmt.Sprintf("%s\n%s said\n```\n%s\n```\n", h.preamble, author, body)
 	prComment := github.IssueComment{
 		Body: &msg,
 	}
 
 	if _, _, err := client.Issues.CreateComment(ctx, repoOwner, repoName, prNum, &prComment); err != nil {
-		logger.Error().Err(err).Msg("Failed to comment on pull request")
+		base.Errorf("failed to comment on pull request (%v)", err)
 	}
 
 	return nil
