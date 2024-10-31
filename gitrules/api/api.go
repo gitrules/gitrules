@@ -52,7 +52,7 @@ type UserPassword struct {
 
 func (cfg Config) Setup(ctx context.Context) Setup {
 
-	git.SetAuthor("gitrules governance", "no-reply@gitrules")
+	git.SetAuthor("GitRules Bot", "no-reply@gitrules.ai")
 
 	// attach auth information to context
 	for url, auth := range cfg.Auth {

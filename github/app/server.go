@@ -27,12 +27,12 @@ func RunServer(ctx context.Context, appServerAddr string, cfg *Config) {
 	)
 	must.NoError(ctx, err)
 
-	prCommentHandler := &PRCommentHandler{
-		ClientCreator: cc,
-		preamble:      cfg.App.PullRequestPreamble,
-	}
-
-	webhookHandler := githubapp.NewDefaultEventDispatcher(cfg.Github, prCommentHandler)
+	webhookHandler := githubapp.NewDefaultEventDispatcher(
+		cfg.Github,
+		&InstallationHandler{
+			ClientCreator: cc,
+		},
+	)
 
 	http.Handle(githubapp.DefaultWebhookRoute, webhookHandler)
 

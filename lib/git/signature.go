@@ -10,8 +10,8 @@ import (
 var (
 	authorLk sync.Mutex
 	author   *object.Signature = &object.Signature{
-		Name:  "4git",
-		Email: "no-reply@gitrules.xyz",
+		Name:  "GitRules",
+		Email: "no-reply@gitrules.ai",
 	}
 )
 
