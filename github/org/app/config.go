@@ -14,7 +14,7 @@ type Config struct {
 }
 
 type AppConfig struct {
-	PullRequestPreamble string `yaml:"pull_request_preamble"`
+	DeployRelease string `yaml:"deploy_release"`
 }
 
 func ReadConfig(path string) (*Config, error) {

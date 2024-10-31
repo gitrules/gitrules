@@ -1,9 +1,9 @@
 package cmd
 
 import (
-	"github.com/gitrules/gitrules/github/app"
-	govgh "github.com/gitrules/gitrules/github/lib"
-	"github.com/gitrules/gitrules/github/lib/deploy/tools"
+	"github.com/gitrules/gitrules/github/org/app"
+	govgh "github.com/gitrules/gitrules/github/org/lib"
+	"github.com/gitrules/gitrules/github/org/lib/deploy/tools"
 	"github.com/gitrules/gitrules/gitrules/api"
 	"github.com/gitrules/gitrules/lib/must"
 	"github.com/gitrules/gitrules/lib/provider/github"

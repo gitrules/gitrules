@@ -18,7 +18,7 @@ func RunServer(ctx context.Context, appServerAddr string, cfg *Config) {
 
 	cc, err := githubapp.NewDefaultCachingClientCreator(
 		cfg.Github,
-		githubapp.WithClientUserAgent("gitrules-for-github/1.0.0"),
+		githubapp.WithClientUserAgent("gitrules-for-github-org/1.0.0"),
 		githubapp.WithClientTimeout(3*time.Second),
 		githubapp.WithClientCaching(false, func() httpcache.Cache { return httpcache.NewMemoryCache() }),
 		githubapp.WithClientMiddleware(
@@ -31,11 +31,12 @@ func RunServer(ctx context.Context, appServerAddr string, cfg *Config) {
 		cfg.Github,
 		&InstallationHandler{
 			ClientCreator: cc,
+			DeployRelease: cfg.App.DeployRelease,
 		},
 	)
 
 	http.Handle(githubapp.DefaultWebhookRoute, webhookHandler)
 
-	base.Infof("Starting GitRules for GitHub app server on %s ...", appServerAddr)
+	base.Infof("Starting GitRules for Organizations app server on %s ...", appServerAddr)
 	must.NoError(ctx, http.ListenAndServe(appServerAddr, nil))
 }

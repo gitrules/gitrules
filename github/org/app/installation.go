@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/gitrules/gitrules/github/lib"
+	"github.com/gitrules/gitrules/github/org/lib"
 	"github.com/gitrules/gitrules/gitrules/api"
 	"github.com/gitrules/gitrules/lib/base"
 	"github.com/gitrules/gitrules/lib/form"
@@ -15,10 +15,9 @@ import (
 	"github.com/pkg/errors"
 )
 
-const GitRulesDeployRelease = "vX.X.X" //XXX
-
 type InstallationHandler struct {
 	githubapp.ClientCreator
+	DeployRelease string `json:"deploy_release"`
 }
 
 func (h *InstallationHandler) Handles() []string {
@@ -36,10 +35,12 @@ func (h *InstallationHandler) Handle(ctx context.Context, eventType, deliveryID 
 
 	action := event.GetAction()
 	if action != "created" {
+		base.Infof("ignoring non-create events")
 		return nil
 	}
 
 	if org := event.GetOrg(); org == nil {
+		base.Errorf("gitrules for orgs cannot deploy to individuals") // XXX: this
 		return fmt.Errorf("installing GitRules org app on a GitHub individual account")
 	}
 
@@ -58,11 +59,13 @@ func (h *InstallationHandler) Handle(ctx context.Context, eventType, deliveryID 
 		return err
 	}
 
+	base.Infof("acquired token %v", token.GetToken())
+
 	// for each repo in the installation
 	for _, repo := range event.Repositories {
 		cfg, err := must.Try1[api.Config](func() api.Config {
 			r := lib.FromGithubRepo(repo)
-			return lib.Deploy(ctx, token.GetToken(), r, r, GitRulesDeployRelease)
+			return lib.Deploy(ctx, token.GetToken(), r, r, h.DeployRelease)
 		})
 		if err != nil {
 			base.Errorf("deploying (%v)", err)

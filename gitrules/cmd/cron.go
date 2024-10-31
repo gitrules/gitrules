@@ -3,7 +3,7 @@ package cmd
 import (
 	"time"
 
-	govgh "github.com/gitrules/gitrules/github/lib"
+	govgh "github.com/gitrules/gitrules/github/org/lib"
 	"github.com/gitrules/gitrules/gitrules/api"
 	"github.com/gitrules/gitrules/proto/cron"
 	"github.com/spf13/cobra"

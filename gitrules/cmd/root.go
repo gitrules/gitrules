@@ -8,7 +8,7 @@ import (
 	"runtime"
 
 	"github.com/gitrules/gitrules"
-	gh "github.com/gitrules/gitrules/github/lib"
+	gh "github.com/gitrules/gitrules/github/org/lib"
 	"github.com/gitrules/gitrules/gitrules/api"
 	"github.com/gitrules/gitrules/lib/base"
 	"github.com/gitrules/gitrules/lib/form"

@@ -41,7 +41,7 @@ func Deploy(
 	// create governance public and private repos
 	v := ghprovider.NewGithubVendorWithClient(ctx, ghClient)
 
-	govPublic := Repo{Owner: govPrefix.Owner, Name: govPrefix.Name + "-gov.public"}
+	govPublic := Repo{Owner: govPrefix.Owner, Name: govPrefix.Name + "-gov.public"} //XXX: gitrules suffix
 	base.Infof("creating GitHub repository %v", govPublic)
 	govPublicURLs, err := v.CreateRepo(ctx, govPublic.Name, govPublic.Owner, false)
 	must.NoError(ctx, err)
@@ -211,8 +211,8 @@ func createDeployEnvironment(
 }
 
 const (
-	DefaultGithubFreq       = 120     // seconds
-	DefaultCommunityFreq    = 60 * 60 // seconds
+	DefaultGithubFreq       = 120 // seconds
+	DefaultCommunityFreq    = 120 // seconds
 	DefaultFetchParallelism = 5
 )
 

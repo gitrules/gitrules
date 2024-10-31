@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/gitrules/gitrules"
-	govgh "github.com/gitrules/gitrules/github/lib"
+	govgh "github.com/gitrules/gitrules/github/org/lib"
 	"github.com/gitrules/gitrules/lib/base"
 	"github.com/gitrules/gitrules/lib/form"
 	"github.com/gitrules/gitrules/lib/git"
