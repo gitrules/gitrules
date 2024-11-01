@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"strings"
 
 	"github.com/gitrules/gitrules/github/org/lib"
 	"github.com/gitrules/gitrules/gitrules/api"
@@ -39,13 +40,16 @@ func (h *InstallationHandler) Handle(ctx context.Context, eventType, deliveryID 
 		return nil
 	}
 
-	if org := event.GetOrg(); org == nil {
-		base.Errorf("gitrules for orgs cannot deploy to individuals") // XXX: this
-		return fmt.Errorf("installing GitRules org app on a GitHub individual account")
+	installation := event.GetInstallation()
+
+	// if org := event.GetOrg(); org == nil {
+	if targetType := strings.ToLower(installation.GetTargetType()); targetType != "organization" {
+		base.Errorf("gitrules for orgs cannot deploy to individual accounts")
+		return fmt.Errorf("installing gitrules for orgs on an individual account")
 	}
 
-	installation := event.GetInstallation()
 	installationID := installation.GetID()
+	base.Infof("installation ID %v", installationID)
 
 	client, err := h.NewInstallationClient(installationID)
 	if err != nil {
@@ -58,7 +62,6 @@ func (h *InstallationHandler) Handle(ctx context.Context, eventType, deliveryID 
 		base.Errorf("acquiring installation token (%v)", err)
 		return err
 	}
-
 	base.Infof("acquired token %v", token.GetToken())
 
 	// for each repo in the installation

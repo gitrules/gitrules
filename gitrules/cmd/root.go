@@ -14,6 +14,7 @@ import (
 	"github.com/gitrules/gitrules/lib/form"
 	"github.com/gitrules/gitrules/lib/git"
 	_ "github.com/gitrules/gitrules/runtime"
+	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 )
 
@@ -70,6 +71,7 @@ func initAfterFlags() {
 	} else {
 		base.LogQuietly()
 	}
+	ctx = log.Logger.WithContext(ctx)
 	base.Infof("gitrules version: %v, os: %v, arch: %v", gitrules.Short(), runtime.GOOS, runtime.GOARCH)
 	api.SetCPUProfilePath(cpuProfilePath)
 	api.SetMemProfilePath(memProfilePath)

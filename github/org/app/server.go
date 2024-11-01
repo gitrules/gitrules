@@ -10,19 +10,40 @@ import (
 	"github.com/gregjones/httpcache"
 	"github.com/palantir/go-githubapp/githubapp"
 	"github.com/rcrowley/go-metrics"
+	"github.com/rs/zerolog"
 )
 
-func RunServer(ctx context.Context, appServerAddr string, cfg *Config) {
+type roundTripperFunc func(*http.Request) (*http.Response, error)
+
+func (fn roundTripperFunc) RoundTrip(r *http.Request) (*http.Response, error) {
+	return fn(r)
+}
+
+func RunServer(ctx context.Context, addr string, cfg *Config) {
 
 	metricsRegistry := metrics.DefaultRegistry
 
 	cc, err := githubapp.NewDefaultCachingClientCreator(
 		cfg.Github,
-		githubapp.WithClientUserAgent("gitrules-for-github-org/1.0.0"),
+		githubapp.WithClientUserAgent("gitrules-for-organizations/1.0.0"),
 		githubapp.WithClientTimeout(3*time.Second),
 		githubapp.WithClientCaching(false, func() httpcache.Cache { return httpcache.NewMemoryCache() }),
 		githubapp.WithClientMiddleware(
+			// add logger to context
+			func(next http.RoundTripper) http.RoundTripper {
+				return roundTripperFunc(
+					func(r *http.Request) (*http.Response, error) {
+						logger := zerolog.Ctx(ctx)
+						return next.RoundTrip(r.WithContext(logger.WithContext(r.Context())))
+					},
+				)
+			},
 			githubapp.ClientMetrics(metricsRegistry),
+			githubapp.ClientLogging(
+				zerolog.DebugLevel,
+				githubapp.LogRequestBody(".*"),
+				githubapp.LogResponseBody(".*"),
+			),
 		),
 	)
 	must.NoError(ctx, err)
@@ -37,6 +58,6 @@ func RunServer(ctx context.Context, appServerAddr string, cfg *Config) {
 
 	http.Handle(githubapp.DefaultWebhookRoute, webhookHandler)
 
-	base.Infof("Starting GitRules for Organizations app server on %s ...", appServerAddr)
-	must.NoError(ctx, http.ListenAndServe(appServerAddr, nil))
+	base.Infof("Starting GitRules for Organizations app server on %s ...", addr)
+	must.NoError(ctx, http.ListenAndServe(addr, nil))
 }

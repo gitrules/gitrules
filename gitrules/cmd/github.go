@@ -13,7 +13,7 @@ import (
 var (
 	githubCmd = &cobra.Command{
 		Use:   "github",
-		Short: "Import and export GitHub issues and pull requests",
+		Short: "GitHub integration commands",
 		Long:  ``,
 		Run:   func(cmd *cobra.Command, args []string) {},
 	}
