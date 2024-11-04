@@ -13,12 +13,6 @@ import (
 	"github.com/rs/zerolog"
 )
 
-type roundTripperFunc func(*http.Request) (*http.Response, error)
-
-func (fn roundTripperFunc) RoundTrip(r *http.Request) (*http.Response, error) {
-	return fn(r)
-}
-
 func RunServer(ctx context.Context, addr string, cfg *Config) {
 
 	metricsRegistry := metrics.DefaultRegistry
@@ -29,7 +23,7 @@ func RunServer(ctx context.Context, addr string, cfg *Config) {
 		githubapp.WithClientTimeout(3*time.Second),
 		githubapp.WithClientCaching(false, func() httpcache.Cache { return httpcache.NewMemoryCache() }),
 		githubapp.WithClientMiddleware(
-			// add logger to context
+			// add logger from this context to request context
 			func(next http.RoundTripper) http.RoundTripper {
 				return roundTripperFunc(
 					func(r *http.Request) (*http.Response, error) {
@@ -38,18 +32,45 @@ func RunServer(ctx context.Context, addr string, cfg *Config) {
 					},
 				)
 			},
+			// log http headers
+			// func(next http.RoundTripper) http.RoundTripper {
+			// 	return roundTripperFunc(
+			// 		func(r *http.Request) (*http.Response, error) {
+			// 			base.Debugf("request_header: %v", r.Header)
+			// 			res, err := next.RoundTrip(r)
+			// 			base.Debugf("response_header: %v", res.Header)
+			// 			return res, err
+			// 		},
+			// 	)
+			// },
 			githubapp.ClientMetrics(metricsRegistry),
-			githubapp.ClientLogging(
-				zerolog.DebugLevel,
-				githubapp.LogRequestBody(".*"),
-				githubapp.LogResponseBody(".*"),
-			),
+			// githubapp.ClientLogging(
+			// 	zerolog.DebugLevel,
+			// 	githubapp.LogRequestBody(".*"),
+			// 	githubapp.LogResponseBody(".*"),
+			// ),
 		),
 	)
 	must.NoError(ctx, err)
 
+	// xx
+	// var installationID int64 = 56665633
+	// client, err := cc.NewAppClient()
+	// must.NoError(ctx, err)
+
+	// token, _, err := client.Apps.CreateInstallationToken(ctx, installationID, &github.InstallationTokenOptions{})
+	// if err != nil {
+	// 	base.Fatalf("acquiring installation token (%v)", err)
+	// }
+	// base.Infof("acquired token %v", token.GetToken())
+	//xx
+
 	webhookHandler := githubapp.NewDefaultEventDispatcher(
 		cfg.Github,
+		&PRCommentHandler{
+			ClientCreator: cc,
+			preamble:      "[GitRulesBotSpeaking]",
+		},
 		&InstallationHandler{
 			ClientCreator: cc,
 			DeployRelease: cfg.App.DeployRelease,
@@ -60,4 +81,10 @@ func RunServer(ctx context.Context, addr string, cfg *Config) {
 
 	base.Infof("Starting GitRules for Organizations app server on %s ...", addr)
 	must.NoError(ctx, http.ListenAndServe(addr, nil))
+}
+
+type roundTripperFunc func(*http.Request) (*http.Response, error)
+
+func (fn roundTripperFunc) RoundTrip(r *http.Request) (*http.Response, error) {
+	return fn(r)
 }

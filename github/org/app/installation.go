@@ -51,9 +51,9 @@ func (h *InstallationHandler) Handle(ctx context.Context, eventType, deliveryID 
 	installationID := installation.GetID()
 	base.Infof("installation ID %v", installationID)
 
-	client, err := h.NewInstallationClient(installationID)
+	client, err := h.NewAppClient()
 	if err != nil {
-		base.Errorf("acquiring installation client (%v)", err)
+		base.Errorf("acquiring app client (%v)", err)
 		return err
 	}
 
@@ -62,7 +62,7 @@ func (h *InstallationHandler) Handle(ctx context.Context, eventType, deliveryID 
 		base.Errorf("acquiring installation token (%v)", err)
 		return err
 	}
-	base.Infof("acquired token %v", token.GetToken())
+	base.Infof("acquired token %v", form.SprintJSON(token))
 
 	// for each repo in the installation
 	for _, repo := range event.Repositories {
