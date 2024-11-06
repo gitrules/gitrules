@@ -8,7 +8,7 @@ import (
 	"runtime"
 
 	"github.com/gitrules/gitrules"
-	gh "github.com/gitrules/gitrules/github/org/lib"
+	ghlib "github.com/gitrules/gitrules/github/org/lib"
 	"github.com/gitrules/gitrules/gitrules/api"
 	"github.com/gitrules/gitrules/lib/base"
 	"github.com/gitrules/gitrules/lib/form"
@@ -28,7 +28,7 @@ var (
 	}
 )
 
-var ctx = gh.WithTokenSource(git.WithTTL(git.WithAuth(context.Background(), nil), nil), nil)
+var ctx = ghlib.InitCommandCtx(context.Background())
 
 var (
 	configPath     string

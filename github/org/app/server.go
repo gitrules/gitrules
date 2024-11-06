@@ -53,18 +53,6 @@ func RunServer(ctx context.Context, addr string, cfg *Config) {
 	)
 	must.NoError(ctx, err)
 
-	// xx
-	// var installationID int64 = 56665633
-	// client, err := cc.NewAppClient()
-	// must.NoError(ctx, err)
-
-	// token, _, err := client.Apps.CreateInstallationToken(ctx, installationID, &github.InstallationTokenOptions{})
-	// if err != nil {
-	// 	base.Fatalf("acquiring installation token (%v)", err)
-	// }
-	// base.Infof("acquired token %v", token.GetToken())
-	//xx
-
 	webhookHandler := githubapp.NewDefaultEventDispatcher(
 		cfg.Github,
 		&PRCommentHandler{

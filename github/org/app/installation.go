@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/gitrules/gitrules/github/org/lib"
+	ghlib "github.com/gitrules/gitrules/github/org/lib"
 	"github.com/gitrules/gitrules/gitrules/api"
 	"github.com/gitrules/gitrules/lib/base"
 	"github.com/gitrules/gitrules/lib/form"
@@ -26,6 +26,8 @@ func (h *InstallationHandler) Handles() []string {
 }
 
 func (h *InstallationHandler) Handle(ctx context.Context, eventType, deliveryID string, payload []byte) error {
+
+	ctx = ghlib.InitCommandCtx(ctx)
 
 	var event github.InstallationEvent
 	if err := json.Unmarshal(payload, &event); err != nil {
@@ -67,8 +69,8 @@ func (h *InstallationHandler) Handle(ctx context.Context, eventType, deliveryID 
 	// for each repo in the installation
 	for _, repo := range event.Repositories {
 		cfg, err := must.Try1[api.Config](func() api.Config {
-			r := lib.FromGithubRepo(repo)
-			return lib.Deploy(ctx, token.GetToken(), r, r, h.DeployRelease)
+			r := ghlib.ParseRepo(ctx, repo.GetFullName())
+			return ghlib.Deploy(ctx, token.GetToken(), r, r, h.DeployRelease)
 		})
 		if err != nil {
 			base.Errorf("deploying (%v)", err)

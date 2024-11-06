@@ -7,7 +7,6 @@ import (
 	"strings"
 
 	"github.com/gitrules/gitrules/lib/must"
-	"github.com/google/go-github/v66/github"
 )
 
 type Repo struct {
@@ -21,10 +20,6 @@ func (x Repo) HTTPS() string {
 
 func NewRepo(owner string, name string) Repo {
 	return Repo{Owner: owner, Name: name}
-}
-
-func FromGithubRepo(ghr *github.Repository) Repo {
-	return NewRepo(ghr.GetOwner().GetLogin(), ghr.GetName())
 }
 
 // ParseRepo parses a github "owner/repo" pair.
