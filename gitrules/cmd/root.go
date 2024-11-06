@@ -28,7 +28,7 @@ var (
 	}
 )
 
-var ctx = ghlib.InitCommandCtx(context.Background())
+var ctx = ghlib.InitCtx(context.Background())
 
 var (
 	configPath     string

@@ -27,7 +27,7 @@ func (h *InstallationHandler) Handles() []string {
 
 func (h *InstallationHandler) Handle(ctx context.Context, eventType, deliveryID string, payload []byte) error {
 
-	ctx = ghlib.InitCommandCtx(ctx)
+	ctx = ghlib.InitCtx(ctx)
 
 	var event github.InstallationEvent
 	if err := json.Unmarshal(payload, &event); err != nil {
@@ -44,7 +44,6 @@ func (h *InstallationHandler) Handle(ctx context.Context, eventType, deliveryID 
 
 	installation := event.GetInstallation()
 
-	// if org := event.GetOrg(); org == nil {
 	if targetType := strings.ToLower(installation.GetTargetType()); targetType != "organization" {
 		base.Errorf("gitrules for orgs cannot deploy to individual accounts")
 		return fmt.Errorf("installing gitrules for orgs on an individual account")
@@ -68,10 +67,12 @@ func (h *InstallationHandler) Handle(ctx context.Context, eventType, deliveryID 
 
 	// for each repo in the installation
 	for _, repo := range event.Repositories {
-		cfg, err := must.Try1[api.Config](func() api.Config {
-			r := ghlib.ParseRepo(ctx, repo.GetFullName())
-			return ghlib.Deploy(ctx, token.GetToken(), r, r, h.DeployRelease)
-		})
+		cfg, err := must.Try1[api.Config](
+			func() api.Config {
+				r := ghlib.ParseRepo(ctx, repo.GetFullName())
+				return ghlib.Deploy(ctx, token.GetToken(), r, r, h.DeployRelease)
+			},
+		)
 		if err != nil {
 			base.Errorf("deploying (%v)", err)
 			continue
