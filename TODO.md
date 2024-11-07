@@ -3,5 +3,4 @@
 - ensure that an installation always targets a single repo
 
 - fix avatar icon link (make materials repo)
-- remove materials.GitRulesDesktopAppInstall
 - remove verbose "notice" headers in comments
