@@ -6,8 +6,8 @@ GITHUB_REPO=$1
 ORGANIZER_GITHUB_TOKEN=$2
 
 CACHE_DIR=""
-GOV_PUBLIC_REPO_URL="https://github.com/${GITHUB_REPO}-gov.public.git"
-GOV_PRIVATE_REPO_URL="https://github.com/${GITHUB_REPO}-gov.private.git"
+GOV_PUBLIC_REPO_URL="https://github.com/${GITHUB_REPO}-gitrules-public.git"
+GOV_PRIVATE_REPO_URL="https://github.com/${GITHUB_REPO}-gitrules-private.git"
 
 CONFIG_JSON=$(
      jq -n \

@@ -32,14 +32,14 @@ var (
 --token is a GitHub access token which has read access to the project repo's issues and pull requests; and
 create and write access to the governance repos.
 
---project is the GitHub project_owner/project_repo of the project repository to be governed.
+--project is the GitHub PROJECT_OWNER/PROJECT_REPO of the project repository to be governed.
 
 --release specifies the GitHub release of gitrules to use for automation.
 
---gov is the GitHub owner and repo name prefix (in the form owner/repo_prefix) of the public and private
-governance repositories to be created. Their names will be repo_prefix:gov.public and repo_prefix:gov.private,
-respectively. If --gov is not specified, their names will default to project_repo:gov.public and
-project_repo:gov.private, respectively.
+--gov is the GitHub owner and repo name prefix (in the form OWNER/REPO_PREFIX) of the public and private
+governance repositories to be created. Their names will be REPO_PREFIX-gitrules-public and REPO_PREFIX-gitrules-private,
+respectively. If --gov is not specified, their names will default to PROJECT_REPO-gitrules-public and
+PROJECT_REPO-gitrules-private, respectively.
 
 Therefore, aside for debugging purposes, users should deploy with:
 

@@ -49,6 +49,11 @@ func (h *InstallationHandler) Handle(ctx context.Context, eventType, deliveryID 
 		return fmt.Errorf("installing gitrules for orgs on an individual account")
 	}
 
+	if repoSelection := installation.GetRepositorySelection(); strings.ToLower(repoSelection) != "selected" {
+		base.Errorf("gitrules for orgs can be installed only on explicitly selected repos")
+		return fmt.Errorf("gitrules for orgs can be installed only on explicitly selected repos")
+	}
+
 	installationID := installation.GetID()
 	base.Infof("installation ID %v", installationID)
 

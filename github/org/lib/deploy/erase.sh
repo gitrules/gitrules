@@ -4,5 +4,5 @@
 
 set -e -x
 
-gitrules -v github remove --token=$1 --repo=$2-gov.public
-gitrules -v github remove --token=$1 --repo=$2-gov.private
+gitrules -v github remove --token=$1 --repo=$2-gitrules-public
+gitrules -v github remove --token=$1 --repo=$2-gitrules-private

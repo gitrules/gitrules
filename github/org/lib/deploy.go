@@ -25,6 +25,11 @@ import (
 	"golang.org/x/oauth2"
 )
 
+const (
+	GitRulesPublicSuffix  = "-gitrules-public"
+	GitRulesPrivateSuffix = "-gitrules-private"
+)
+
 func Deploy(
 	ctx context.Context,
 	token string, // permissions: read project issues, create/write govPrefix
@@ -41,12 +46,12 @@ func Deploy(
 	// create governance public and private repos
 	v := ghprovider.NewGithubVendorWithClient(ctx, ghClient)
 
-	govPublic := Repo{Owner: govPrefix.Owner, Name: govPrefix.Name + "-gov.public"} //XXX: gitrules suffix
+	govPublic := Repo{Owner: govPrefix.Owner, Name: govPrefix.Name + GitRulesPublicSuffix}
 	base.Infof("creating GitHub repository %v", govPublic)
 	govPublicURLs, err := v.CreateRepo(ctx, govPublic.Name, govPublic.Owner, false)
 	must.NoError(ctx, err)
 
-	govPrivate := Repo{Owner: govPrefix.Owner, Name: govPrefix.Name + "-gov.private"}
+	govPrivate := Repo{Owner: govPrefix.Owner, Name: govPrefix.Name + GitRulesPrivateSuffix}
 	base.Infof("creating GitHub repository %v", govPrivate)
 	govPrivateURLs, err := v.CreateRepo(ctx, govPrivate.Name, govPrivate.Owner, true)
 	must.NoError(ctx, err)
@@ -174,7 +179,7 @@ func createDeployEnvironment(
 
 	// create environment secrets
 	envSecrets := map[string]string{
-		"ORGANIZER_GITHUB_TOKEN": token,
+		DeployEnvOrganizerToken: token,
 	}
 
 	govEnvPubKey, _, err := ghClient.Actions.GetEnvPublicKey(ctx, int(ghGovPubRepo.GetID()), env.GetName())
@@ -182,7 +187,7 @@ func createDeployEnvironment(
 	must.NoError(ctx, err)
 
 	for k, v := range envSecrets {
-		encryptedValue := encryptValue(ctx, govEnvPubKey, v)
+		encryptedValue := EncryptSecret(ctx, govEnvPubKey, v)
 		encryptedSecret := &github.EncryptedSecret{
 			Name:           k,
 			KeyID:          govEnvPubKey.GetKeyID(),
@@ -216,7 +221,7 @@ const (
 	DefaultFetchParallelism = 5
 )
 
-func encryptValue(ctx context.Context, pubKey *github.PublicKey, secretValue string) string {
+func EncryptSecret(ctx context.Context, pubKey *github.PublicKey, secretValue string) string {
 
 	decodedPubKey, err := base64.StdEncoding.DecodeString(pubKey.GetKey())
 	must.NoError(ctx, err)

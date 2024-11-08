@@ -85,7 +85,7 @@ Here `$GITRULES_RELEASE` specifies the GitRules release on GitHub that you want 
 
 During the deployment, the following steps are performed:
 
-- Two new repositories — one public, one private — are created within the GitHub organization of your project repository. The public repository is named `$PROJECT_REPO-gov.public` and the private repository is named `$PROJECT_REPO-gov.private`.
+- Two new repositories — one public, one private — are created within the GitHub organization of your project repository. The public repository is named `$PROJECT_REPO-gitrules-public` and the private repository is named `$PROJECT_REPO-gitrules-private`.
 
 - Both repositories are initialized with a newly-generated identity for your governance system. This step corresponds to the `gitrules init-gov` command.
 

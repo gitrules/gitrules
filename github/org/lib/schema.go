@@ -36,8 +36,11 @@ const (
 	// the issue with this label will be used as a dashboard display
 	DashboardIssueLabel = "gitrules:dashboard"
 
-	// Github deploy environment
+	// Github deploy environment name
 	DeployEnvName = "gitrules:governance"
+
+	// GitHub deploy environment secrets
+	DeployEnvOrganizerToken = "ORGANIZER_GITHUB_TOKEN"
 )
 
 var GovernanceLabels = []string{

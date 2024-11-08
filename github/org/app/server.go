@@ -67,6 +67,11 @@ func RunServer(ctx context.Context, addr string, cfg *Config) {
 
 	http.Handle(githubapp.DefaultWebhookRoute, webhookHandler)
 
+	base.Infof("Starting GitRules for Organizations cron ...")
+	go func() {
+		updateCron(ctx, cc)
+	}()
+
 	base.Infof("Starting GitRules for Organizations app server on %s ...", addr)
 	must.NoError(ctx, http.ListenAndServe(addr, nil))
 }
