@@ -7,6 +7,7 @@ import (
 
 	"github.com/gitrules/gitrules/github/org/lib"
 	"github.com/gitrules/gitrules/lib/base"
+	"github.com/gitrules/gitrules/lib/form"
 	"github.com/gitrules/gitrules/lib/must"
 	"github.com/google/go-github/v66/github"
 	"github.com/palantir/go-githubapp/githubapp"
@@ -90,6 +91,8 @@ func updateInstallation(ctx context.Context, cc githubapp.ClientCreator, install
 		opt.Page = resp.NextPage
 	}
 
+	base.Infof("planning to update repositories: %v", form.SprintJSON(repoFullNames(all)))
+
 	// for each repo
 	for _, repo := range all {
 		err := must.Try(
@@ -101,6 +104,14 @@ func updateInstallation(ctx context.Context, cc githubapp.ClientCreator, install
 			base.Errorf("updating installation at repository %v (%v)", repo.GetFullName(), err)
 		}
 	}
+}
+
+func repoFullNames(repos []*github.Repository) []string {
+	names := make([]string, len(repos))
+	for i, repo := range repos {
+		names[i] = repo.GetFullName()
+	}
+	return names
 }
 
 func updateRepo(

@@ -55,10 +55,6 @@ func RunServer(ctx context.Context, addr string, cfg *Config) {
 
 	webhookHandler := githubapp.NewDefaultEventDispatcher(
 		cfg.Github,
-		&PRCommentHandler{
-			ClientCreator: cc,
-			preamble:      "[GitRulesBotSpeaking]",
-		},
 		&InstallationHandler{
 			ClientCreator: cc,
 			DeployRelease: cfg.App.DeployRelease,
