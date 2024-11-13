@@ -16,7 +16,6 @@ func ClearComments(
 	token string,
 	repo govgh.Repo,
 	issueNo int64,
-
 ) {
 
 	// create authenticated GitHub client
