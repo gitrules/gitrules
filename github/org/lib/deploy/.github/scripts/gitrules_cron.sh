@@ -49,7 +49,7 @@ CONFIG_JSON=$(
 echo $CONFIG_JSON > ~/.gitrules/config.json
 cat ~/.gitrules/config.json
 
-gitrules -v --config=$HOME/.gitrules/config.json cron \
+gitrules -v --config=$HOME/.gitrules/config.json cron org \
      --token=$ORGANIZER_GITHUB_TOKEN \
      --project=$PROJECT_OWNER/$PROJECT_REPO \
      --github_freq=$SYNC_GITHUB_FREQ \
