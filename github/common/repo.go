@@ -1,4 +1,4 @@
-package lib
+package common
 
 import (
 	"context"
@@ -31,18 +31,18 @@ func ParseRepo(ctx context.Context, s string) Repo {
 
 // url can be an HTTPS or an SSH git URL.
 func ParseGithubRepoURL(url string) (Repo, error) {
-	repo, err := parseGithubRepoHTTPSURL(url)
+	repo, err := ParseGithubRepoHTTPSURL(url)
 	if err == nil {
 		return repo, nil
 	}
-	repo, err = parseGithubRepoSSHURL(url)
+	repo, err = ParseGithubRepoSSHURL(url)
 	if err == nil {
 		return repo, nil
 	}
 	return Repo{}, fmt.Errorf("not an https or ssh github repo url")
 }
 
-func parseGithubRepoHTTPSURL(s string) (repo Repo, err error) {
+func ParseGithubRepoHTTPSURL(s string) (repo Repo, err error) {
 	m := githubRepoHTTPSURLRegexp.FindStringSubmatch(s)
 	if m == nil {
 		return Repo{}, fmt.Errorf("not a github https repo url")
@@ -64,7 +64,7 @@ const (
 
 var githubRepoHTTPSURLRegexp = regexp.MustCompile(githubRepoHTTPSURLRegexpSrc)
 
-func parseGithubRepoSSHURL(s string) (repo Repo, err error) {
+func ParseGithubRepoSSHURL(s string) (repo Repo, err error) {
 	m := githubRepoSSHURLRegexp.FindStringSubmatch(s)
 	if m == nil {
 		return Repo{}, fmt.Errorf("not a github ssh repo url")

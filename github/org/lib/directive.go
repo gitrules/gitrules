@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/gitrules/gitrules/github/common"
 	"github.com/gitrules/gitrules/lib/base"
 	"github.com/gitrules/gitrules/lib/form"
 	"github.com/gitrules/gitrules/lib/git"
@@ -64,7 +65,7 @@ type GiveToMatchingFund struct {
 
 func ProcessDirectiveIssuesByMaintainer(
 	ctx context.Context,
-	repo Repo,
+	repo common.Repo,
 	ghc *github.Client,
 	govAddr gov.OwnerAddress,
 
@@ -77,7 +78,7 @@ func ProcessDirectiveIssuesByMaintainer(
 
 func ProcessDirectiveIssues(
 	ctx context.Context,
-	repo Repo,
+	repo common.Repo,
 	ghc *github.Client,
 	govAddr gov.OwnerAddress,
 	maintainers []string,
@@ -104,7 +105,7 @@ func ProcessDirectiveIssues(
 
 func ProcessDirectiveIssues_StageOnly(
 	ctx context.Context,
-	repo Repo,
+	repo common.Repo,
 	ghc *github.Client, // if nil, a new client for repo will be created
 	govAddr gov.OwnerAddress,
 	govCloned gov.OwnerCloned,
@@ -135,7 +136,7 @@ func ProcessDirectiveIssues_StageOnly(
 
 func processDirectiveIssue_StageOnly(
 	ctx context.Context,
-	repo Repo,
+	repo common.Repo,
 	ghc *github.Client,
 	govAddr gov.OwnerAddress,
 	cloned gov.OwnerCloned,

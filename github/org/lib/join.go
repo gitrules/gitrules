@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/gitrules/gitrules/github/common"
 	"github.com/gitrules/gitrules/lib/base"
 	"github.com/gitrules/gitrules/lib/form"
 	"github.com/gitrules/gitrules/lib/git"
@@ -18,7 +19,7 @@ import (
 
 func ProcessJoinRequestIssuesApprovedByMaintainer(
 	ctx context.Context,
-	repo Repo,
+	repo common.Repo,
 	ghc *github.Client, // if nil, a new client for repo will be created
 	govAddr gov.OwnerAddress,
 	allowNonGithubJoins bool,
@@ -31,7 +32,7 @@ func ProcessJoinRequestIssuesApprovedByMaintainer(
 
 func ProcessJoinRequestIssues(
 	ctx context.Context,
-	repo Repo,
+	repo common.Repo,
 	ghc *github.Client, // if nil, a new client for repo will be created
 	govAddr gov.OwnerAddress,
 	approverGitHubUsers []string,
@@ -71,7 +72,7 @@ type ProcessJoinRequestIssuesReport struct {
 
 func ProcessJoinRequestIssues_StageOnly(
 	ctx context.Context,
-	repo Repo,
+	repo common.Repo,
 	ghc *github.Client, // if nil, a new client for repo will be created
 	govAddr gov.OwnerAddress,
 	govCloned gov.OwnerCloned,
@@ -106,7 +107,7 @@ func isJoinRequestIssue(issue *github.Issue) bool {
 
 func processJoinRequestIssue_StageOnly(
 	ctx context.Context,
-	repo Repo,
+	repo common.Repo,
 	ghc *github.Client, // if nil, a new client for repo will be created
 	govAddr gov.OwnerAddress,
 	govCloned gov.OwnerCloned,
@@ -184,11 +185,11 @@ func processJoinRequestIssue_StageOnly(
 }
 
 type JoinRequest struct {
-	User         string     `json:"github_user"`
-	PublicRepo   Repo       `json:"public_repo"`
-	PublicURL    git.URL    `json:"public_url"`
-	PublicBranch git.Branch `json:"public_branch"`
-	Email        string     `json:"email"`
+	User         string      `json:"github_user"`
+	PublicRepo   common.Repo `json:"public_repo"`
+	PublicURL    git.URL     `json:"public_url"`
+	PublicBranch git.Branch  `json:"public_branch"`
+	Email        string      `json:"email"`
 }
 
 func (x JoinRequest) PublicAddress() id.PublicAddress {
@@ -223,7 +224,7 @@ func parseJoinRequest(authorLogin string, body string) (*JoinRequest, error) {
 		return nil, err
 	}
 	publicURL = git.URL(strings.TrimSpace(string(publicURL)))
-	repo, _ := parseGithubRepoHTTPSURL(string(publicURL))
+	repo, _ := common.ParseGithubRepoHTTPSURL(string(publicURL))
 	// if repo is not a GitHub URL, that's ok
 	return &JoinRequest{
 		User:         authorLogin,

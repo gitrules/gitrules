@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/gitrules/gitrules/github/common"
 	govgh "github.com/gitrules/gitrules/github/org/lib"
 	"github.com/gitrules/gitrules/lib/base"
 	"github.com/gitrules/gitrules/lib/git"
@@ -75,7 +76,7 @@ func TestProcessJoinRequests(t *testing.T) {
 		mock.WithRequestMatch(mock.PostReposIssuesCommentsByOwnerByRepoByIssueNumber, testProcessJoinRequestsCreateComments...),
 		mock.WithRequestMatch(mock.PatchReposIssuesByOwnerByRepoByIssueNumber, testProcessJoinRequestsEditIssue...),
 	)
-	ghRepo := govgh.Repo{Owner: "owner1", Name: "repo1"}
+	ghRepo := common.Repo{Owner: "owner1", Name: "repo1"}
 	ghClient := github.NewClient(mockedHTTPClient)
 
 	// process join requests

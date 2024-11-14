@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"github.com/gitrules/gitrules/github/common"
 	"github.com/gitrules/gitrules/github/org/app"
 	govgh "github.com/gitrules/gitrules/github/org/lib"
 	"github.com/gitrules/gitrules/github/org/lib/deploy/tools"
@@ -61,13 +62,13 @@ Therefore, aside for debugging purposes, users should deploy with:
 				func() any {
 					must.Assertf(ctx, githubRelease != "", "github release must be specified")
 
-					project := govgh.ParseRepo(ctx, githubProject)
+					project := common.ParseRepo(ctx, githubProject)
 
-					var govPrefix govgh.Repo
+					var govPrefix common.Repo
 					if githubGov == "" {
 						govPrefix = project
 					} else {
-						govPrefix = govgh.ParseRepo(ctx, githubGov)
+						govPrefix = common.ParseRepo(ctx, githubGov)
 					}
 
 					// deploy governance on GitHub (by way of placing GitHub actions in the public governance repo)
@@ -143,7 +144,7 @@ This creates a public repo. Adding the flag --private will result in creating a 
 		Run: func(cmd *cobra.Command, args []string) {
 			api.Invoke1(
 				func() any {
-					ghRepo := govgh.ParseRepo(ctx, githubRepo)
+					ghRepo := common.ParseRepo(ctx, githubRepo)
 					vendor := github.NewGitHubVendor(ctx, githubToken)
 					repo, err := vendor.CreateRepo(ctx, ghRepo.Name, ghRepo.Owner, githubPrivate)
 					must.NoError(ctx, err)
@@ -163,7 +164,7 @@ This creates a public repo. Adding the flag --private will result in creating a 
 		Run: func(cmd *cobra.Command, args []string) {
 			api.Invoke(
 				func() {
-					ghRepo := govgh.ParseRepo(ctx, githubRepo)
+					ghRepo := common.ParseRepo(ctx, githubRepo)
 					vendor := github.NewGitHubVendor(ctx, githubToken)
 					err := vendor.RemoveRepo(ctx, ghRepo.Name, ghRepo.Owner)
 					must.NoError(ctx, err)
@@ -179,7 +180,7 @@ This creates a public repo. Adding the flag --private will result in creating a 
 		Run: func(cmd *cobra.Command, args []string) {
 			api.Invoke(
 				func() {
-					ghRepo := govgh.ParseRepo(ctx, githubRepo)
+					ghRepo := common.ParseRepo(ctx, githubRepo)
 					tools.ClearComments(
 						ctx,
 						githubToken,

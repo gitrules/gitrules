@@ -4,7 +4,7 @@ import (
 	"context"
 	"sync"
 
-	govgh "github.com/gitrules/gitrules/github/org/lib"
+	"github.com/gitrules/gitrules/github/common"
 	"github.com/gitrules/gitrules/lib/base"
 	"github.com/gitrules/gitrules/lib/must"
 	"github.com/google/go-github/v66/github"
@@ -14,7 +14,7 @@ import (
 func ClearComments(
 	ctx context.Context,
 	token string,
-	repo govgh.Repo,
+	repo common.Repo,
 	issueNo int64,
 ) {
 

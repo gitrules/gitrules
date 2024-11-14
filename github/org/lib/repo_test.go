@@ -1,9 +1,13 @@
 package lib
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/gitrules/gitrules/github/common"
+)
 
 func TestParseGithubRepoHTTPSURL(t *testing.T) {
-	repo, err := parseGithubRepoHTTPSURL("https://github.com/abc/xyz.git")
+	repo, err := common.ParseGithubRepoHTTPSURL("https://github.com/abc/xyz.git")
 	if err != nil {
 		t.Error(err)
 	}
@@ -16,7 +20,7 @@ func TestParseGithubRepoHTTPSURL(t *testing.T) {
 }
 
 func TestParseGithubRepoSSHURL(t *testing.T) {
-	repo, err := parseGithubRepoSSHURL("git@github.com:abc/x.y.z.git")
+	repo, err := common.ParseGithubRepoSSHURL("git@github.com:abc/x.y.z.git")
 	if err != nil {
 		t.Error(err)
 	}

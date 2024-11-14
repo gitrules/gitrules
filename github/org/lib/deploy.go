@@ -9,6 +9,7 @@ import (
 	"path"
 	"strconv"
 
+	"github.com/gitrules/gitrules/github/common"
 	"github.com/gitrules/gitrules/gitrules/api"
 	"github.com/gitrules/gitrules/lib/base"
 	"github.com/gitrules/gitrules/lib/form"
@@ -25,17 +26,12 @@ import (
 	"golang.org/x/oauth2"
 )
 
-const (
-	GitRulesPublicSuffix  = "-gitrules-public"
-	GitRulesPrivateSuffix = "-gitrules-private"
-)
-
 func Deploy(
 	ctx context.Context,
 	token string, // permissions: read project issues, create/write govPrefix
-	project Repo,
-	govPrefix Repo,
-	ghRelease string, // GitHub release of GitRules to install
+	project common.Repo,
+	govPrefix common.Repo,
+	release string, // GitHub release of GitRules to install
 ) api.Config {
 
 	// create authenticated GitHub client
@@ -46,12 +42,12 @@ func Deploy(
 	// create governance public and private repos
 	v := ghprovider.NewGithubVendorWithClient(ctx, ghClient)
 
-	govPublic := Repo{Owner: govPrefix.Owner, Name: govPrefix.Name + GitRulesPublicSuffix}
+	govPublic := common.Repo{Owner: govPrefix.Owner, Name: govPrefix.Name + common.GitRulesPublicSuffix}
 	base.Infof("creating GitHub repository %v", govPublic)
 	govPublicURLs, err := v.CreateRepo(ctx, govPublic.Name, govPublic.Owner, false)
 	must.NoError(ctx, err)
 
-	govPrivate := Repo{Owner: govPrefix.Owner, Name: govPrefix.Name + GitRulesPrivateSuffix}
+	govPrivate := common.Repo{Owner: govPrefix.Owner, Name: govPrefix.Name + common.GitRulesPrivateSuffix}
 	base.Infof("creating GitHub repository %v", govPrivate)
 	govPrivateURLs, err := v.CreateRepo(ctx, govPrivate.Name, govPrivate.Owner, true)
 	must.NoError(ctx, err)
@@ -77,7 +73,7 @@ func Deploy(
 
 	// create GitHub environment for governance
 	base.Infof("creating GitHub environment for governance in %v", govPublic)
-	createDeployEnvironment(ctx, ghClient, token, project, govPublic, govPublicURLs, govPrivateURLs, ghRelease)
+	createDeployEnvironment(ctx, ghClient, token, project, govPublic, govPublicURLs, govPrivateURLs, release)
 
 	// install github automation in the public governance repo
 	base.Infof("installing GitHub actions for governance in %v, targetting %v", govPublic, project)
@@ -143,7 +139,7 @@ func installGithubActions(
 func createGovernanceIssueLabels(
 	ctx context.Context,
 	ghc *github.Client,
-	project Repo,
+	project common.Repo,
 ) {
 
 	for _, l := range GovernanceLabels {
@@ -161,8 +157,8 @@ func createDeployEnvironment(
 	ctx context.Context,
 	ghClient *github.Client,
 	token string,
-	project Repo,
-	govPublic Repo,
+	project common.Repo,
+	govPublic common.Repo,
 	govPublicURLs *gitprovider.Repository,
 	govPrivateURLs *gitprovider.Repository,
 	ghRelease string,

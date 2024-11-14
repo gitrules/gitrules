@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/gitrules/gitrules/github/common"
 	ghlib "github.com/gitrules/gitrules/github/org/lib"
 	"github.com/gitrules/gitrules/gitrules/api"
 	"github.com/gitrules/gitrules/lib/base"
@@ -74,7 +75,7 @@ func (h *InstallationHandler) Handle(ctx context.Context, eventType, deliveryID 
 	for _, repo := range event.Repositories {
 		cfg, err := must.Try1[api.Config](
 			func() api.Config {
-				r := ghlib.ParseRepo(ctx, repo.GetFullName())
+				r := common.ParseRepo(ctx, repo.GetFullName())
 				return ghlib.Deploy(ctx, token.GetToken(), r, r, h.DeployRelease)
 			},
 		)

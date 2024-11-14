@@ -8,6 +8,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/gitrules/gitrules/github/common"
 	"github.com/gitrules/gitrules/lib/base"
 	"github.com/gitrules/gitrules/lib/must"
 	"github.com/gitrules/gitrules/lib/util"
@@ -21,7 +22,7 @@ import (
 func LoadIssues(
 	ctx context.Context,
 	ghc *github.Client, // if nil, a new client for repo will be created
-	repo Repo,
+	repo common.Repo,
 	loadPR LoadPRFunc,
 
 ) (ImportedIssues, map[string]ImportedIssue) {
@@ -42,7 +43,7 @@ func LoadIssues(
 	return order, key
 }
 
-func FetchIssues(ctx context.Context, repo Repo, ghc *github.Client) []*github.Issue {
+func FetchIssues(ctx context.Context, repo common.Repo, ghc *github.Client) []*github.Issue {
 
 	opt := &github.IssueListByRepoOptions{State: "all"}
 	var allIssues []*github.Issue
@@ -105,14 +106,14 @@ func IsIssueManaged(issue *github.Issue) bool {
 
 type LoadPRFunc func(
 	ctx context.Context,
-	repo Repo,
+	repo common.Repo,
 	issue *github.Issue,
 ) bool
 
 func TransformIssue(
 	ctx context.Context,
 	ghc *github.Client,
-	repo Repo,
+	repo common.Repo,
 	issue *github.Issue,
 	loadPR LoadPRFunc,
 
@@ -154,7 +155,7 @@ func unwrapTimestamp(ts *github.Timestamp) *time.Time {
 // parseIssueRefs parses all references to issues or pull requests from the body of an issue.
 // Reference directives are of the form: "addresses|resolves|etc. https://github.com/gitrules/testing.project/issues/2"
 // References are extracted syntactically and are not guaranteed to correspond to real issues.
-func parseIssueRefs(ctx context.Context, repo Repo, issue *github.Issue) []ImportedRef {
+func parseIssueRefs(ctx context.Context, repo common.Repo, issue *github.Issue) []ImportedRef {
 
 	refs := []ImportedRef{}
 	matches := refRegexp.FindAllStringSubmatch(issue.GetBody(), -1)

@@ -5,6 +5,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/gitrules/gitrules/github/common"
 	"github.com/gitrules/gitrules/lib/base"
 	"github.com/gitrules/gitrules/proto/gov"
 	"github.com/gitrules/gitrules/proto/motion/motionapi"
@@ -14,7 +15,7 @@ import (
 
 func DisplayNotices_StageOnly(
 	ctx context.Context,
-	repo Repo,
+	repo common.Repo,
 	ghc *github.Client,
 	cloned gov.Cloned,
 ) {
@@ -35,7 +36,7 @@ func DisplayNotices_StageOnly(
 
 func flushNotices(
 	ctx context.Context,
-	repo Repo,
+	repo common.Repo,
 	ghc *github.Client,
 	cloned gov.Cloned,
 	queue *notice.NoticeQueue,

@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/gitrules/gitrules"
+	"github.com/gitrules/gitrules/github/common"
 	"github.com/gitrules/gitrules/lib/git"
 	"github.com/gitrules/gitrules/lib/must"
 	"github.com/gitrules/gitrules/lib/ns"
@@ -19,7 +20,7 @@ import (
 
 func PublishDashboard(
 	ctx context.Context,
-	repo Repo,
+	repo common.Repo,
 	ghc *github.Client,
 	cloned gov.Cloned,
 ) {
@@ -29,7 +30,7 @@ func PublishDashboard(
 		Branch: cloned.Address().Branch + ".web-assets",
 	}
 
-	assetsRepo, err := ParseGithubRepoURL(string(assetsAddr.Repo))
+	assetsRepo, err := common.ParseGithubRepoURL(string(assetsAddr.Repo))
 	must.NoError(ctx, err)
 
 	assets := metrics.AssembleReport_Local(
@@ -56,7 +57,7 @@ func PublishDashboard(
 	updateDashboard(ctx, ghc, repo, "GitRules community dashboard", header+assets.ReportMD)
 }
 
-func uploadedAssetURL(repo Repo, branch string, gitPath string) string {
+func uploadedAssetURL(repo common.Repo, branch string, gitPath string) string {
 	return fmt.Sprintf(
 		"https://raw.githubusercontent.com/%s/%s/%s/%s",
 		repo.Owner,
@@ -84,7 +85,7 @@ func uploadAssets(
 func updateDashboard(
 	ctx context.Context,
 	ghc *github.Client,
-	repo Repo,
+	repo common.Repo,
 	title string,
 	body string,
 

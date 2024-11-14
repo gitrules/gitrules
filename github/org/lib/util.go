@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/gitrules/gitrules"
+	"github.com/gitrules/gitrules/github/common"
 	"github.com/gitrules/gitrules/lib/must"
 	"github.com/gitrules/gitrules/lib/util"
 	"github.com/gitrules/gitrules/materials"
@@ -15,7 +16,7 @@ import (
 
 func FetchRepoMaintainers(
 	ctx context.Context,
-	repo Repo,
+	repo common.Repo,
 	ghc *github.Client,
 ) []string {
 
@@ -32,7 +33,7 @@ func FetchRepoMaintainers(
 	return m
 }
 
-func fetchOpenIssues(ctx context.Context, repo Repo, ghc *github.Client, labelled ...string) []*github.Issue {
+func fetchOpenIssues(ctx context.Context, repo common.Repo, ghc *github.Client, labelled ...string) []*github.Issue {
 	opt := &github.IssueListByRepoOptions{State: "open", Labels: labelled}
 	var allIssues []*github.Issue
 	for {
@@ -49,7 +50,7 @@ func fetchOpenIssues(ctx context.Context, repo Repo, ghc *github.Client, labelle
 
 func replyAndCloseIssue(
 	ctx context.Context,
-	repo Repo,
+	repo common.Repo,
 	ghc *github.Client,
 	issue *github.Issue,
 	subject string,
@@ -61,7 +62,7 @@ func replyAndCloseIssue(
 
 func replyToIssue(
 	ctx context.Context,
-	repo Repo,
+	repo common.Repo,
 	ghc *github.Client,
 	issueNum int,
 	subject string,
@@ -91,7 +92,7 @@ const (
 
 func closeIssue(
 	ctx context.Context,
-	repo Repo,
+	repo common.Repo,
 	ghc *github.Client,
 	issueNumber int,
 ) {
@@ -104,7 +105,7 @@ func closeIssue(
 
 func fetchIssueComments(
 	ctx context.Context,
-	repo Repo,
+	repo common.Repo,
 	ghc *github.Client,
 	issue *github.Issue,
 ) []*github.IssueComment {

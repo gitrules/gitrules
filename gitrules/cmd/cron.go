@@ -3,6 +3,7 @@ package cmd
 import (
 	"time"
 
+	"github.com/gitrules/gitrules/github/common"
 	govgh "github.com/gitrules/gitrules/github/org/lib"
 	"github.com/gitrules/gitrules/gitrules/api"
 	cron_individual "github.com/gitrules/gitrules/proto/cron/individual"
@@ -31,7 +32,7 @@ It will ensure that:
 			api.Invoke1(
 				func() any {
 					LoadConfig()
-					repo := govgh.ParseRepo(ctx, githubProject)
+					repo := common.ParseRepo(ctx, githubProject)
 					govgh.SetTokenSource(ctx, repo, govgh.MakeStaticTokenSource(ctx, githubToken))
 					ghc := govgh.GetGithubClient(ctx, repo)
 					result := cron_org.Cron(
@@ -59,7 +60,7 @@ This command is intended as a target for a cronjob which runs every couple of mi
 			api.Invoke1(
 				func() any {
 					LoadConfig()
-					repo := govgh.ParseRepo(ctx, githubProject)
+					repo := common.ParseRepo(ctx, githubProject)
 					govgh.SetTokenSource(ctx, repo, govgh.MakeStaticTokenSource(ctx, githubToken))
 					ghc := govgh.GetGithubClient(ctx, repo)
 					result := cron_individual.Cron(

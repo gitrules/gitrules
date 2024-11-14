@@ -6,6 +6,7 @@ import (
 	"slices"
 	"strings"
 
+	"github.com/gitrules/gitrules/github/common"
 	"github.com/gitrules/gitrules/proto"
 	"github.com/gitrules/gitrules/proto/gov"
 	"github.com/gitrules/gitrules/proto/member"
@@ -26,7 +27,7 @@ import (
 
 func SyncManagedIssues(
 	ctx context.Context,
-	repo Repo,
+	repo common.Repo,
 	githubClient *github.Client,
 	govAddr gov.OwnerAddress,
 
@@ -72,7 +73,7 @@ func newSyncManagedChanges() *SyncManagedChanges {
 
 func SyncManagedIssues_StageOnly(
 	ctx context.Context,
-	repo Repo,
+	repo common.Repo,
 	ghc *github.Client,
 	addr gov.OwnerAddress,
 	cloned gov.OwnerCloned,
@@ -89,7 +90,7 @@ func SyncManagedIssues_StageOnly(
 	index := indexMotions(motionapi.ListMotions_Local(ctx, t))
 
 	loadPR := func(ctx context.Context,
-		repo Repo,
+		repo common.Repo,
 		issue *github.Issue,
 	) bool {
 
@@ -113,7 +114,7 @@ func SyncManagedIssues_StageOnly(
 
 func syncRefsThenMotions(
 	ctx context.Context,
-	repo Repo,
+	repo common.Repo,
 	ghc *github.Client,
 	addr gov.OwnerAddress,
 	cloned gov.OwnerCloned,
@@ -143,7 +144,7 @@ func syncRefsThenMotions(
 
 func syncMotions(
 	ctx context.Context,
-	repo Repo,
+	repo common.Repo,
 	ghc *github.Client,
 	addr gov.OwnerAddress,
 	cloned gov.OwnerCloned,
@@ -171,7 +172,7 @@ func syncMotions(
 
 func syncMotion(
 	ctx context.Context,
-	repo Repo,
+	repo common.Repo,
 	ghc *github.Client,
 	addr gov.OwnerAddress,
 	cloned gov.OwnerCloned,

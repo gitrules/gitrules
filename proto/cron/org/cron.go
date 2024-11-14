@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/gitrules/gitrules"
+	"github.com/gitrules/gitrules/github/common"
 	govgh "github.com/gitrules/gitrules/github/org/lib"
 	"github.com/gitrules/gitrules/lib/base"
 	"github.com/gitrules/gitrules/lib/form"
@@ -24,7 +25,7 @@ var CronNS = ns.NS{"cron", "cron.json"}
 
 func Cron(
 	ctx context.Context,
-	repo govgh.Repo,
+	repo common.Repo,
 	ghc *github.Client,
 	govAddr gov.OwnerAddress,
 	//
