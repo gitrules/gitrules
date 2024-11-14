@@ -93,7 +93,7 @@ During the deployment, the following steps are performed:
      - Reading all issues and pull requests from your project repositories and updating the governance system accordingly, and
      - Fetching votes and other service requests by your community members and incorporating them into the governance system.
 
-- A new GitHub environment called `gitrules:governance` is created, where the GitHub action `gitrules_cron.yml` runs. This environment contains a set of variables:
+- A new GitHub environment called `gitrules` is created, where the GitHub action `gitrules_cron.yml` runs. This environment contains a set of variables:
   - `GITRULES_RELEASE` is the GitRules release to use for the automation
   - `PUBLIC_REPO_URL` is the HTTPS URL of the public governance repository
   - `PRIVATE_REPO_URL` is the HTTPS URL of the private governance repository

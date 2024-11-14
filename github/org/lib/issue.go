@@ -37,7 +37,7 @@ const (
 	DashboardIssueLabel = "gitrules:dashboard"
 
 	// Github deploy environment name
-	DeployEnvName = "gitrules:governance"
+	DeployEnvName = "gitrules"
 
 	// GitHub deploy environment secrets
 	DeployEnvAccessToken = "ACCESS_TOKEN"

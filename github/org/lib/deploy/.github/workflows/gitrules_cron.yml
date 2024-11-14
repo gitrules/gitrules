@@ -7,7 +7,7 @@ on:
 
 jobs:
   sync_github:
-    environment: gitrules:governance
+    environment: gitrules
     runs-on: ubuntu-latest
     permissions:
       contents: write

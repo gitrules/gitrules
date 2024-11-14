@@ -17,13 +17,10 @@ import (
 	"github.com/gitrules/gitrules/lib/must"
 	"github.com/gitrules/gitrules/lib/ns"
 	gitprovider "github.com/gitrules/gitrules/lib/provider"
-	ghprovider "github.com/gitrules/gitrules/lib/provider/github"
 	"github.com/gitrules/gitrules/proto/boot"
 	"github.com/gitrules/gitrules/proto/gov"
-	"github.com/gitrules/gitrules/proto/id"
 	"github.com/google/go-github/v66/github"
 	"golang.org/x/crypto/nacl/box"
-	"golang.org/x/oauth2"
 )
 
 func Deploy(
@@ -34,68 +31,44 @@ func Deploy(
 	release string, // GitHub release of GitRules to install
 ) api.Config {
 
-	// create authenticated GitHub client
-	ts := oauth2.StaticTokenSource(&oauth2.Token{AccessToken: token})
-	tc := oauth2.NewClient(ctx, ts)
-	ghClient := github.NewClient(tc)
+	ghc := common.NewClientForToken(ctx, token)
 
-	// create governance public and private repos
-	v := ghprovider.NewGithubVendorWithClient(ctx, ghClient)
-
-	govPublic := common.Repo{Owner: govPrefix.Owner, Name: govPrefix.Name + common.GitRulesPublicSuffix}
-	base.Infof("creating GitHub repository %v", govPublic)
-	govPublicURLs, err := v.CreateRepo(ctx, govPublic.Name, govPublic.Owner, false)
-	must.NoError(ctx, err)
-
-	govPrivate := common.Repo{Owner: govPrefix.Owner, Name: govPrefix.Name + common.GitRulesPrivateSuffix}
-	base.Infof("creating GitHub repository %v", govPrivate)
-	govPrivateURLs, err := v.CreateRepo(ctx, govPrivate.Name, govPrivate.Owner, true)
-	must.NoError(ctx, err)
-
-	govOwnerAddr := gov.OwnerAddress{
-		Public: id.PublicAddress{
-			Repo:   git.URL(govPublicURLs.HTTPSURL),
-			Branch: git.MainBranch,
-		},
-		Private: id.PrivateAddress{
-			Repo:   git.URL(govPrivateURLs.HTTPSURL),
-			Branch: git.MainBranch,
-		},
-	}
+	pp, idOwnerAddr := common.CreatePublicPrivateRepos(ctx, ghc, project, govPrefix)
+	govOwnerAddr := gov.OwnerAddress(idOwnerAddr)
 
 	// attach access token authentication to context for git use
 	git.SetAuth(ctx, govOwnerAddr.Public.Repo, git.MakeTokenAuth(ctx, token))
 	git.SetAuth(ctx, govOwnerAddr.Private.Repo, git.MakeTokenAuth(ctx, token))
 
 	// initialize governance identity
-	base.Infof("initializing governance for %v", project)
+	base.Infof("initializing organizational governance for %v", project)
 	boot.Boot(ctx, govOwnerAddr)
 
 	// create GitHub environment for governance
-	base.Infof("creating GitHub environment for governance in %v", govPublic)
-	createDeployEnvironment(ctx, ghClient, token, project, govPublic, govPublicURLs, govPrivateURLs, release)
+	base.Infof("creating GitHub environment for governance in %v", pp.Public)
+	createDeployEnvironment(ctx, ghc, token, project, pp.Public, pp.PublicURLs, pp.PrivateURLs, release)
 
 	// install github automation in the public governance repo
-	base.Infof("installing GitHub actions for governance in %v, targetting %v", govPublic, project)
+	base.Infof("installing GitHub actions for governance in %v, targetting %v", pp.Public, project)
 	installGithubActions(ctx, govOwnerAddr)
 
 	// install governance labels in project repo
-	createGovernanceIssueLabels(ctx, ghClient, project)
+	createGovernanceIssueLabels(ctx, ghc, project)
 
 	// return config for gitrules administrator
 	homeDir, err := os.UserHomeDir()
 	must.NoError(ctx, err)
 	return api.Config{
 		Auth: map[git.URL]api.AuthConfig{
-			git.URL(govPublicURLs.HTTPSURL):               {AccessToken: github.String(token)},
-			git.URL(govPrivateURLs.HTTPSURL):              {AccessToken: github.String(token)},
+			git.URL(pp.PublicURLs.HTTPSURL):               {AccessToken: github.String(token)},
+			git.URL(pp.PrivateURLs.HTTPSURL):              {AccessToken: github.String(token)},
 			git.URL("YOUR_MEMBER_PUBLIC_REPO_HTTPS_URL"):  {AccessToken: github.String("YOUR_MEMBER_ACCESS_TOKEN")},
 			git.URL("YOUR_MEMBER_PRIVATE_REPO_HTTPS_URL"): {AccessToken: github.String("YOUR_MEMBER_ACCESS_TOKEN")},
 		},
 		//
-		GovPublicURL:     git.URL(govPublicURLs.HTTPSURL),
+		GovPublicURL:     git.URL(pp.PublicURLs.HTTPSURL),
 		GovPublicBranch:  git.MainBranch,
-		GovPrivateURL:    git.URL(govPrivateURLs.HTTPSURL),
+		GovPrivateURL:    git.URL(pp.PrivateURLs.HTTPSURL),
 		GovPrivateBranch: git.MainBranch,
 		//
 		MemberPublicURL:     "YOUR_MEMBER_PUBLIC_REPO_HTTPS_URL",
