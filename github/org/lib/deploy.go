@@ -179,7 +179,7 @@ func createDeployEnvironment(
 
 	// create environment secrets
 	envSecrets := map[string]string{
-		DeployEnvOrganizerToken: token,
+		DeployEnvAccessToken: token,
 	}
 
 	govEnvPubKey, _, err := ghClient.Actions.GetEnvPublicKey(ctx, int(ghGovPubRepo.GetID()), env.GetName())
@@ -200,14 +200,14 @@ func createDeployEnvironment(
 
 	// create environment variables
 	envVars := map[string]string{
-		"GITRULES_RELEASE":     ghRelease,
-		"PROJECT_OWNER":        project.Owner,
-		"PROJECT_REPO":         project.Name,
-		"GOV_PUBLIC_REPO_URL":  govPublicURLs.HTTPSURL,
-		"GOV_PRIVATE_REPO_URL": govPrivateURLs.HTTPSURL,
-		"SYNC_GITHUB_FREQ":     strconv.Itoa(DefaultGithubFreq),
-		"SYNC_COMMUNITY_FREQ":  strconv.Itoa(DefaultCommunityFreq),
-		"SYNC_FETCH_PAR":       strconv.Itoa(DefaultFetchParallelism),
+		"GITRULES_RELEASE":    ghRelease,
+		"PROJECT_OWNER":       project.Owner,
+		"PROJECT_REPO":        project.Name,
+		"PUBLIC_REPO_URL":     govPublicURLs.HTTPSURL,
+		"PRIVATE_REPO_URL":    govPrivateURLs.HTTPSURL,
+		"SYNC_GITHUB_FREQ":    strconv.Itoa(DefaultGithubFreq),
+		"SYNC_COMMUNITY_FREQ": strconv.Itoa(DefaultCommunityFreq),
+		"SYNC_FETCH_PAR":      strconv.Itoa(DefaultFetchParallelism),
 	}
 	for k, v := range envVars {
 		_, err := ghClient.Actions.CreateEnvVariable(ctx, govPublic.Owner, govPublic.Name, env.GetName(), &github.ActionsVariable{Name: k, Value: v})

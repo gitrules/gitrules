@@ -122,7 +122,7 @@ func updateRepo(
 	repo *github.Repository,
 ) {
 
-	curSecret, _, err := ic.Actions.GetEnvSecret(ctx, int(repo.GetID()), lib.DeployEnvName, lib.DeployEnvOrganizerToken)
+	curSecret, _, err := ic.Actions.GetEnvSecret(ctx, int(repo.GetID()), lib.DeployEnvName, lib.DeployEnvAccessToken)
 	must.NoError(ctx, err)
 
 	now := time.Now()
@@ -146,7 +146,7 @@ func updateRepo(
 	encryptedToken := lib.EncryptSecret(ctx, pubKey, token.GetToken())
 
 	newSecret := &github.EncryptedSecret{
-		Name:           lib.DeployEnvOrganizerToken,
+		Name:           lib.DeployEnvAccessToken,
 		KeyID:          pubKey.GetKeyID(),
 		EncryptedValue: encryptedToken,
 	}

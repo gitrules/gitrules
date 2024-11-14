@@ -1,20 +1,20 @@
 #!/bin/sh
 #
-# Usage: mkconfig.sh GITHUB_REPO ORGANIZER_GITHUB_TOKEN
+# Usage: mkconfig.sh GITHUB_REPO ACCESS_TOKEN
 
 GITHUB_REPO=$1
-ORGANIZER_GITHUB_TOKEN=$2
+ACCESS_TOKEN=$2
 
 CACHE_DIR=""
-GOV_PUBLIC_REPO_URL="https://github.com/${GITHUB_REPO}-gitrules-public.git"
-GOV_PRIVATE_REPO_URL="https://github.com/${GITHUB_REPO}-gitrules-private.git"
+PUBLIC_REPO_URL="https://github.com/${GITHUB_REPO}-gitrules-public.git"
+PRIVATE_REPO_URL="https://github.com/${GITHUB_REPO}-gitrules-private.git"
 
 CONFIG_JSON=$(
      jq -n \
           --arg cache_dir "$CACHE_DIR" \
-          --arg gov_pub_repo "$GOV_PUBLIC_REPO_URL" \
-          --arg gov_priv_repo "$GOV_PRIVATE_REPO_URL" \
-          --arg gov_auth_token "$ORGANIZER_GITHUB_TOKEN" \
+          --arg gov_pub_repo "$PUBLIC_REPO_URL" \
+          --arg gov_priv_repo "$PRIVATE_REPO_URL" \
+          --arg gov_auth_token "$ACCESS_TOKEN" \
           '{
                "cache_dir": $cache_dir,
                "auth" : {

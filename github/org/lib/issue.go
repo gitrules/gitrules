@@ -40,7 +40,7 @@ const (
 	DeployEnvName = "gitrules:governance"
 
 	// GitHub deploy environment secrets
-	DeployEnvOrganizerToken = "ORGANIZER_GITHUB_TOKEN"
+	DeployEnvAccessToken = "ACCESS_TOKEN"
 )
 
 var GovernanceLabels = []string{
