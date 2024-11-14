@@ -85,7 +85,7 @@ Here `$GITRULES_RELEASE` specifies the GitRules release on GitHub that you want 
 
 During the deployment, the following steps are performed:
 
-- Two new repositories — one public, one private — are created within the GitHub organization of your project repository. The public repository is named `$PROJECT_REPO-gov.public` and the private repository is named `$PROJECT_REPO-gov.private`.
+- Two new repositories — one public, one private — are created within the GitHub organization of your project repository. The public repository is named `$PROJECT_REPO-gitrules-public` and the private repository is named `$PROJECT_REPO-gitrules-private`.
 
 - Both repositories are initialized with a newly-generated identity for your governance system. This step corresponds to the `gitrules init-gov` command.
 
@@ -93,17 +93,17 @@ During the deployment, the following steps are performed:
      - Reading all issues and pull requests from your project repositories and updating the governance system accordingly, and
      - Fetching votes and other service requests by your community members and incorporating them into the governance system.
 
-- A new GitHub environment called `gitrules:governance` is created, where the GitHub action `gitrules_cron.yml` runs. This environment contains a set of variables:
+- A new GitHub environment called `gitrules` is created, where the GitHub action `gitrules_cron.yml` runs. This environment contains a set of variables:
   - `GITRULES_RELEASE` is the GitRules release to use for the automation
-  - `GOV_PUBLIC_REPO_URL` is the HTTPS URL of the public governance repository
-  - `GOV_PRIVATE_REPO_URL` is the HTTPS URL of the private governance repository
+  - `PUBLIC_REPO_URL` is the HTTPS URL of the public governance repository
+  - `PRIVATE_REPO_URL` is the HTTPS URL of the private governance repository
   - `PROJECT_OWNER` is the GitHub user or organization owning your project repository
   - `PROJECT_REPO` is the name of your project repository
   - `SYNC_GITHUB_FREQ` is the number of seconds between updates from GitHub.
   - `SYNC_COMMUNITY_FREQ`is the number of seconds between updates from community members.
   - `SYNC_FETCH_PAR` is the number of parallel repository fetches performed during updates from community members.
 
-     Additionally, a GitHub secret called `ORGANIZER_GITHUB_TOKEN` is created in the public governance repository. This secret contains the GitHub access token you provided to the deployment command. It is used by the GitHub actions to access your project repository, as well as the governance repositories.
+     Additionally, a GitHub secret called `ACCESS_TOKEN` is created in the public governance repository. This secret contains the GitHub access token you provided to the deployment command. It is used by the GitHub actions to access your project repository, as well as the governance repositories.
 
 ## Managing your deployment
 

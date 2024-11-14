@@ -3,17 +3,25 @@ package cmd
 import (
 	"time"
 
-	"github.com/gitrules/gitrules/github"
-	govgh "github.com/gitrules/gitrules/github"
+	"github.com/gitrules/gitrules/github/common"
+	govgh "github.com/gitrules/gitrules/github/org/lib"
 	"github.com/gitrules/gitrules/gitrules/api"
-	"github.com/gitrules/gitrules/proto/cron"
+	cron_individual "github.com/gitrules/gitrules/proto/cron/individual"
+	cron_org "github.com/gitrules/gitrules/proto/cron/org"
 	"github.com/spf13/cobra"
 )
 
 var (
 	cronCmd = &cobra.Command{
 		Use:   "cron",
-		Short: "cron performs time-dependent update operations to the governance system",
+		Short: "Cron tasks",
+		Long:  ``,
+		Run:   func(cmd *cobra.Command, args []string) {},
+	}
+
+	cronOrgCmd = &cobra.Command{
+		Use:   "org",
+		Short: "cron for orgs",
 		Long: `
 This command is intended as a target for a cronjob which runs every couple of minutes.
 It will ensure that:
@@ -24,17 +32,43 @@ It will ensure that:
 			api.Invoke1(
 				func() any {
 					LoadConfig()
-					repo := govgh.ParseRepo(ctx, githubProject)
+					repo := common.ParseRepo(ctx, githubProject)
 					govgh.SetTokenSource(ctx, repo, govgh.MakeStaticTokenSource(ctx, githubToken))
 					ghc := govgh.GetGithubClient(ctx, repo)
-					result := cron.Cron(
+					result := cron_org.Cron(
 						ctx,
 						repo,
 						ghc,
 						setup.Organizer,
-						time.Duration(cronGithubFreqSeconds)*time.Second,
-						time.Duration(cronCommunityFreqSeconds)*time.Second,
+						time.Duration(cronOrgGithubFreqSeconds)*time.Second,
+						time.Duration(cronOrgCommunityFreqSeconds)*time.Second,
 						syncFetchPar,
+					)
+					return result
+				},
+			)
+		},
+	}
+
+	cronIndividualCmd = &cobra.Command{
+		Use:   "individual",
+		Short: "cron for individuals",
+		Long: `
+This command is intended as a target for a cronjob which runs every couple of minutes.
+`,
+		Run: func(cmd *cobra.Command, args []string) {
+			api.Invoke1(
+				func() any {
+					LoadConfig()
+					repo := common.ParseRepo(ctx, githubProject)
+					govgh.SetTokenSource(ctx, repo, govgh.MakeStaticTokenSource(ctx, githubToken))
+					ghc := govgh.GetGithubClient(ctx, repo)
+					result := cron_individual.Cron(
+						ctx,
+						repo,
+						ghc,
+						setup.Member,
+						time.Duration(cronOrgGithubFreqSeconds)*time.Second,
 					)
 					return result
 				},
@@ -44,20 +78,30 @@ It will ensure that:
 )
 
 var (
-	cronGithubFreqSeconds    int
-	cronCommunityFreqSeconds int
+	cronOrgGithubFreqSeconds    int
+	cronOrgCommunityFreqSeconds int
 )
 
 func init() {
-	cronCmd.Flags().StringVar(&githubProject, "project", "", "GitHub project owner/repo")
-	cronCmd.Flags().StringVar(&githubToken, "token", "", "GitHub access token")
-	cronCmd.Flags().IntVar(&cronGithubFreqSeconds, "github_freq", github.DefaultGithubFreq, "frequency of GitHub import, in seconds")
-	cronCmd.Flags().IntVar(&cronCommunityFreqSeconds, "community_freq", github.DefaultCommunityFreq, "frequency of community tallies, in seconds")
-	cronCmd.Flags().IntVar(&syncFetchPar, "fetch_par", github.DefaultFetchParallelism, "parallelism while clonging member repos for vote collection")
+	cronCmd.AddCommand(cronOrgCmd)
+	cronOrgCmd.Flags().StringVar(&githubProject, "project", "", "GitHub project owner/repo")
+	cronOrgCmd.Flags().StringVar(&githubToken, "token", "", "GitHub access token")
+	cronOrgCmd.Flags().IntVar(&cronOrgGithubFreqSeconds, "github_freq", govgh.DefaultGithubFreq, "frequency of GitHub import, in seconds")
+	cronOrgCmd.Flags().IntVar(&cronOrgCommunityFreqSeconds, "community_freq", govgh.DefaultCommunityFreq, "frequency of community tallies, in seconds")
+	cronOrgCmd.Flags().IntVar(&syncFetchPar, "fetch_par", govgh.DefaultFetchParallelism, "parallelism while clonging member repos for vote collection")
 
-	cronCmd.MarkFlagRequired("project")
-	cronCmd.MarkFlagRequired("token")
-	cronCmd.MarkFlagRequired("github_freq")
-	cronCmd.MarkFlagRequired("community_freq")
-	cronCmd.MarkFlagRequired("fetch_par")
+	cronOrgCmd.MarkFlagRequired("project")
+	cronOrgCmd.MarkFlagRequired("token")
+	cronOrgCmd.MarkFlagRequired("github_freq")
+	cronOrgCmd.MarkFlagRequired("community_freq")
+	cronOrgCmd.MarkFlagRequired("fetch_par")
+
+	cronCmd.AddCommand(cronIndividualCmd)
+	cronIndividualCmd.Flags().StringVar(&githubProject, "project", "", "GitHub project owner/repo")
+	cronIndividualCmd.Flags().StringVar(&githubToken, "token", "", "GitHub access token")
+	cronIndividualCmd.Flags().IntVar(&cronOrgGithubFreqSeconds, "github_freq", govgh.DefaultGithubFreq, "frequency of GitHub import, in seconds")
+
+	cronIndividualCmd.MarkFlagRequired("project")
+	cronIndividualCmd.MarkFlagRequired("token")
+	cronIndividualCmd.MarkFlagRequired("github_freq")
 }

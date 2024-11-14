@@ -4,14 +4,15 @@ import (
 	"fmt"
 	"testing"
 
-	govgh "github.com/gitrules/gitrules/github"
+	"github.com/gitrules/gitrules/github/common"
+	govgh "github.com/gitrules/gitrules/github/org/lib"
 	"github.com/gitrules/gitrules/lib/base"
 	"github.com/gitrules/gitrules/lib/form"
 	"github.com/gitrules/gitrules/lib/testutil"
 	"github.com/gitrules/gitrules/proto/account"
 	"github.com/gitrules/gitrules/runtime"
 	"github.com/gitrules/gitrules/test"
-	"github.com/google/go-github/v58/github"
+	"github.com/google/go-github/v66/github"
 	"github.com/migueleliasweb/go-github-mock/src/mock"
 )
 
@@ -78,7 +79,7 @@ func TestDirective(t *testing.T) {
 		mock.WithRequestMatch(mock.PatchReposIssuesByOwnerByRepoByIssueNumber,
 			testDirectiveEditIssue...),
 	)
-	ghRepo := govgh.Repo{Owner: "owner1", Name: "repo1"}
+	ghRepo := common.Repo{Owner: "owner1", Name: "repo1"}
 	ghClient := github.NewClient(mockedHTTPClient)
 
 	// process directives

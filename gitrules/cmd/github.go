@@ -1,8 +1,10 @@
 package cmd
 
 import (
-	govgh "github.com/gitrules/gitrules/github"
-	"github.com/gitrules/gitrules/github/deploy/tools"
+	"github.com/gitrules/gitrules/github/common"
+	"github.com/gitrules/gitrules/github/org/app"
+	govgh "github.com/gitrules/gitrules/github/org/lib"
+	"github.com/gitrules/gitrules/github/org/lib/deploy/tools"
 	"github.com/gitrules/gitrules/gitrules/api"
 	"github.com/gitrules/gitrules/lib/must"
 	"github.com/gitrules/gitrules/lib/provider/github"
@@ -12,17 +14,24 @@ import (
 var (
 	githubCmd = &cobra.Command{
 		Use:   "github",
-		Short: "Import and export GitHub issues and pull requests",
+		Short: "GitHub integration commands",
 		Long:  ``,
 		Run:   func(cmd *cobra.Command, args []string) {},
 	}
 
 	githubDeployCmd = &cobra.Command{
 		Use:   "deploy",
-		Short: "Deploy governance for a GitHub project repo",
+		Short: "Deployment to GitHub",
+		Long:  ``,
+		Run:   func(cmd *cobra.Command, args []string) {},
+	}
+
+	githubDeployOrgCmd = &cobra.Command{
+		Use:   "org",
+		Short: "Deploy organizational governance for a GitHub project repo",
 		Long: `Example usage:
 
-	gitrules github deploy \
+	gitrules github deploy org \
 		--token=GITHUB_ACCESS_TOKEN \
 		--project=PROJECT_OWNER/PROJECT_REPO \
 		--release=GITRULES_RELEASE \
@@ -31,18 +40,18 @@ var (
 --token is a GitHub access token which has read access to the project repo's issues and pull requests; and
 create and write access to the governance repos.
 
---project is the GitHub project_owner/project_repo of the project repository to be governed.
+--project is the GitHub PROJECT_OWNER/PROJECT_REPO of the project repository to be governed.
 
 --release specifies the GitHub release of gitrules to use for automation.
 
---gov is the GitHub owner and repo name prefix (in the form owner/repo_prefix) of the public and private
-governance repositories to be created. Their names will be repo_prefix:gov.public and repo_prefix:gov.private,
-respectively. If --gov is not specified, their names will default to project_repo:gov.public and
-project_repo:gov.private, respectively.
+--gov is the GitHub owner and repo name prefix (in the form OWNER/REPO_PREFIX) of the public and private
+governance repositories to be created. Their names will be REPO_PREFIX-gitrules-public and REPO_PREFIX-gitrules-private,
+respectively. If --gov is not specified, their names will default to PROJECT_REPO-gitrules-public and
+PROJECT_REPO-gitrules-private, respectively.
 
 Therefore, aside for debugging purposes, users should deploy with:
 
-	gitrules github deploy \
+	gitrules github deploy org \
 		--token=GITHUB_ACCESS_TOKEN \
 		--project=PROJECT_OWNER/PROJECT_REPO \
 		--release=GITRULES_RELEASE
@@ -53,13 +62,13 @@ Therefore, aside for debugging purposes, users should deploy with:
 				func() any {
 					must.Assertf(ctx, githubRelease != "", "github release must be specified")
 
-					project := govgh.ParseRepo(ctx, githubProject)
+					project := common.ParseRepo(ctx, githubProject)
 
-					var govPrefix govgh.Repo
+					var govPrefix common.Repo
 					if githubGov == "" {
 						govPrefix = project
 					} else {
-						govPrefix = govgh.ParseRepo(ctx, githubGov)
+						govPrefix = common.ParseRepo(ctx, githubGov)
 					}
 
 					// deploy governance on GitHub (by way of placing GitHub actions in the public governance repo)
@@ -67,6 +76,59 @@ Therefore, aside for debugging purposes, users should deploy with:
 					return config
 				},
 			)
+		},
+	}
+
+	githubDeployIndividualCmd = &cobra.Command{
+		Use:   "individual",
+		Short: "Deploy individual governance for a GitHub project repo",
+		Long: `Example usage:
+
+	gitrules github deploy individual \
+		--token=GITHUB_ACCESS_TOKEN \
+		--project=PROJECT_OWNER/PROJECT_REPO \
+		--release=GITRULES_RELEASE \
+		--gov=GOV_OWNER/GOV_REPO_PREFIX
+
+--token is a GitHub access token which has read access to the project repo's issues and pull requests; and
+create and write access to the governance repos.
+
+--project is the GitHub PROJECT_OWNER/PROJECT_REPO of the project repository to be governed.
+
+--release specifies the GitHub release of gitrules to use for automation.
+
+--gov is the GitHub owner and repo name prefix (in the form OWNER/REPO_PREFIX) of the public and private
+governance repositories to be created. Their names will be REPO_PREFIX-gitrules-public and REPO_PREFIX-gitrules-private,
+respectively. If --gov is not specified, their names will default to PROJECT_REPO-gitrules-public and
+PROJECT_REPO-gitrules-private, respectively.
+
+Therefore, aside for debugging purposes, users should deploy with:
+
+	gitrules github deploy individual \
+		--token=GITHUB_ACCESS_TOKEN \
+		--project=PROJECT_OWNER/PROJECT_REPO \
+		--release=GITRULES_RELEASE
+
+`,
+		Run: func(cmd *cobra.Command, args []string) {
+			// api.Invoke1(
+			// 	func() any {
+			// 		must.Assertf(ctx, githubRelease != "", "github release must be specified")
+
+			// 		project := govgh.ParseRepo(ctx, githubProject)
+
+			// 		var govPrefix govgh.Repo
+			// 		if githubGov == "" {
+			// 			govPrefix = project
+			// 		} else {
+			// 			govPrefix = govgh.ParseRepo(ctx, githubGov)
+			// 		}
+
+			// 		// deploy governance on GitHub (by way of placing GitHub actions in the public governance repo)
+			// 		config := govgh.Deploy(ctx, githubToken, project, govPrefix, githubRelease)
+			// 		return config
+			// 	},
+			// )
 		},
 	}
 
@@ -82,7 +144,7 @@ This creates a public repo. Adding the flag --private will result in creating a 
 		Run: func(cmd *cobra.Command, args []string) {
 			api.Invoke1(
 				func() any {
-					ghRepo := govgh.ParseRepo(ctx, githubRepo)
+					ghRepo := common.ParseRepo(ctx, githubRepo)
 					vendor := github.NewGitHubVendor(ctx, githubToken)
 					repo, err := vendor.CreateRepo(ctx, ghRepo.Name, ghRepo.Owner, githubPrivate)
 					must.NoError(ctx, err)
@@ -102,7 +164,7 @@ This creates a public repo. Adding the flag --private will result in creating a 
 		Run: func(cmd *cobra.Command, args []string) {
 			api.Invoke(
 				func() {
-					ghRepo := govgh.ParseRepo(ctx, githubRepo)
+					ghRepo := common.ParseRepo(ctx, githubRepo)
 					vendor := github.NewGitHubVendor(ctx, githubToken)
 					err := vendor.RemoveRepo(ctx, ghRepo.Name, ghRepo.Owner)
 					must.NoError(ctx, err)
@@ -118,7 +180,7 @@ This creates a public repo. Adding the flag --private will result in creating a 
 		Run: func(cmd *cobra.Command, args []string) {
 			api.Invoke(
 				func() {
-					ghRepo := govgh.ParseRepo(ctx, githubRepo)
+					ghRepo := common.ParseRepo(ctx, githubRepo)
 					tools.ClearComments(
 						ctx,
 						githubToken,
@@ -129,27 +191,77 @@ This creates a public repo. Adding the flag --private will result in creating a 
 			)
 		},
 	}
+
+	githubAppCmd = &cobra.Command{
+		Use:   "app",
+		Short: "Run GitHub app server",
+		Long:  ``,
+		Run:   func(cmd *cobra.Command, args []string) {},
+	}
+
+	githubAppOrgsCmd = &cobra.Command{
+		Use:   "orgs",
+		Short: "Run GitRules for Organizations app server",
+		Long:  ``,
+		Run: func(cmd *cobra.Command, args []string) {
+			api.Invoke(
+				func() {
+					appCfg, err := app.ReadConfig(githubAppConfig)
+					must.NoError(ctx, err)
+					app.RunServer(ctx, githubAppAddress, appCfg)
+				},
+			)
+		},
+	}
+
+	githubAppIndividualsCmd = &cobra.Command{
+		Use:   "individuals",
+		Short: "Run GitRules for Individuals app server",
+		Long:  ``,
+		Run: func(cmd *cobra.Command, args []string) {
+			// api.Invoke(
+			// 	func() {
+			// 		appCfg, err := app.ReadConfig(githubAppConfig)
+			// 		must.NoError(ctx, err)
+			// 		app.RunServer(ctx, githubAppAddress, appCfg)
+			// 	},
+			// )
+		},
+	}
 )
 
 var (
-	githubToken   string
-	githubProject string
-	githubRelease string
-	githubGov     string
-	githubRepo    string
-	githubPrivate bool
-	githubIssueNo int64
+	githubToken      string
+	githubProject    string
+	githubRelease    string
+	githubGov        string
+	githubRepo       string
+	githubPrivate    bool
+	githubIssueNo    int64
+	githubAppAddress string
+	githubAppConfig  string
 )
 
 func init() {
 	githubCmd.AddCommand(githubDeployCmd)
-	githubDeployCmd.Flags().StringVar(&githubToken, "token", "", "GitHub access token")
-	githubDeployCmd.Flags().StringVar(&githubProject, "project", "", "GitHub project owner/repo")
-	githubDeployCmd.Flags().StringVar(&githubRelease, "release", "", "GitHub release of GitRules to use for automation")
-	githubDeployCmd.Flags().StringVar(&githubGov, "gov", "", "governance Github owner/repo_prefix")
-	githubDeployCmd.MarkFlagRequired("token")
-	githubDeployCmd.MarkFlagRequired("project")
-	githubDeployCmd.MarkFlagRequired("release")
+
+	githubDeployCmd.AddCommand(githubDeployOrgCmd)
+	githubDeployOrgCmd.Flags().StringVar(&githubToken, "token", "", "GitHub access token")
+	githubDeployOrgCmd.Flags().StringVar(&githubProject, "project", "", "GitHub project owner/repo")
+	githubDeployOrgCmd.Flags().StringVar(&githubRelease, "release", "", "GitHub release of GitRules to use for automation")
+	githubDeployOrgCmd.Flags().StringVar(&githubGov, "gov", "", "governance Github owner/repo_prefix")
+	githubDeployOrgCmd.MarkFlagRequired("token")
+	githubDeployOrgCmd.MarkFlagRequired("project")
+	githubDeployOrgCmd.MarkFlagRequired("release")
+
+	githubDeployCmd.AddCommand(githubDeployIndividualCmd)
+	githubDeployIndividualCmd.Flags().StringVar(&githubToken, "token", "", "GitHub access token")
+	githubDeployIndividualCmd.Flags().StringVar(&githubProject, "project", "", "GitHub project owner/repo")
+	githubDeployIndividualCmd.Flags().StringVar(&githubRelease, "release", "", "GitHub release of GitRules to use for automation")
+	githubDeployIndividualCmd.Flags().StringVar(&githubGov, "gov", "", "governance Github owner/repo_prefix")
+	githubDeployIndividualCmd.MarkFlagRequired("token")
+	githubDeployIndividualCmd.MarkFlagRequired("project")
+	githubDeployIndividualCmd.MarkFlagRequired("release")
 
 	githubCmd.AddCommand(githubCreateCmd)
 	githubCreateCmd.Flags().StringVar(&githubToken, "token", "", "GitHub access token")
@@ -172,4 +284,15 @@ func init() {
 	githubClearCommentsCmd.MarkFlagRequired("project")
 	githubClearCommentsCmd.MarkFlagRequired("issue")
 
+	githubCmd.AddCommand(githubAppCmd)
+
+	githubAppCmd.AddCommand(githubAppOrgsCmd)
+	githubAppOrgsCmd.Flags().StringVar(&githubAppAddress, "addr", "localhost:3000", "GitHub app server address")
+	githubAppOrgsCmd.Flags().StringVar(&githubAppConfig, "config", "", "GitHub app config")
+	githubClearCommentsCmd.MarkFlagRequired("config")
+
+	githubAppCmd.AddCommand(githubAppIndividualsCmd)
+	githubAppIndividualsCmd.Flags().StringVar(&githubAppAddress, "addr", "localhost:3000", "GitHub app server address")
+	githubAppIndividualsCmd.Flags().StringVar(&githubAppConfig, "config", "", "GitHub app config")
+	githubClearCommentsCmd.MarkFlagRequired("config")
 }

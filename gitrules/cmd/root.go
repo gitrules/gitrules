@@ -8,12 +8,13 @@ import (
 	"runtime"
 
 	"github.com/gitrules/gitrules"
-	"github.com/gitrules/gitrules/github"
+	ghlib "github.com/gitrules/gitrules/github/org/lib"
 	"github.com/gitrules/gitrules/gitrules/api"
 	"github.com/gitrules/gitrules/lib/base"
 	"github.com/gitrules/gitrules/lib/form"
 	"github.com/gitrules/gitrules/lib/git"
 	_ "github.com/gitrules/gitrules/runtime"
+	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 )
 
@@ -27,7 +28,7 @@ var (
 	}
 )
 
-var ctx = github.WithTokenSource(git.WithTTL(git.WithAuth(context.Background(), nil), nil), nil)
+var ctx = ghlib.InitCtx(context.Background())
 
 var (
 	configPath     string
@@ -70,6 +71,7 @@ func initAfterFlags() {
 	} else {
 		base.LogQuietly()
 	}
+	ctx = log.Logger.WithContext(ctx)
 	base.Infof("gitrules version: %v, os: %v, arch: %v", gitrules.Short(), runtime.GOOS, runtime.GOARCH)
 	api.SetCPUProfilePath(cpuProfilePath)
 	api.SetMemProfilePath(memProfilePath)
